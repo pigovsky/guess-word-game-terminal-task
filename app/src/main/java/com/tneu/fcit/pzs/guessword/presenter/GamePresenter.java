@@ -45,7 +45,7 @@ public class GamePresenter {
      */
     public void checkWord(String guess) {
         // TODO: Добавте код, який порівнює введене користувачем слово guess з secretWord (без врахування регістру)
-        // слід викликати змінювати рахунок користувача методом addScore (див. нижче) та викликати метод
+        // слід змінювати рахунок користувача методом addScore (див. нижче) та викликати метод
         // gameView.showCongratulations чи gameView.showGameOver
     }
 
