@@ -82,6 +82,10 @@ public class GamePresenter {
             addScore(-1);
             gameView.letterAbsent(letter);
         }
+        if(!getUserCurrentGuess().contains("*"))
+            gameView.showCongratulations(getSecretWord());
+
+        System.out.println(getUserCurrentGuess());
     }
 
     private void addScore(int value) {

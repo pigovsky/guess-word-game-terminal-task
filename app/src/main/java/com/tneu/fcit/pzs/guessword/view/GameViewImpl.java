@@ -14,6 +14,7 @@ public class GameViewImpl implements GameView {
     private final User user;
     private final UserServiceImpl userBase;
     private final GameTasksService gameTasksService;
+    private boolean needToStrartNewGame=false;
 
     public GameViewImpl(User user) {
         this.user = user;
@@ -29,6 +30,8 @@ public class GameViewImpl implements GameView {
                 System.exit(0);
             } else if (guess.length() == 1) {
                 game.checkLetter(guess);
+                if(needToStrartNewGame)
+                    game = initNewGame();
             } else if (guess.length() > 1) {
                 game.checkWord(guess);
                 game = initNewGame();
@@ -59,6 +62,7 @@ public class GameViewImpl implements GameView {
     @Override
     public void showCongratulations(String secretWord) {
         System.out.printf("The word is really %s. You have win! Your score is %d\n", secretWord, user.getScore());
+        needToStrartNewGame = true;
     }
 
     private GamePresenter initNewGame() {
