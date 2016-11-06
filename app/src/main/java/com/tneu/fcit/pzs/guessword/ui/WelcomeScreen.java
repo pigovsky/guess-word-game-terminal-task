@@ -5,6 +5,7 @@ import com.tneu.fcit.pzs.guessword.service.UserService;
 import com.tneu.fcit.pzs.guessword.service.UserServiceImpl;
 import com.tneu.fcit.pzs.guessword.utils.Utils;
 import com.tneu.fcit.pzs.guessword.view.GameViewImpl;
+import java.util.Map;
 
 /**
  * Created by yp on 02.11.16.
@@ -14,12 +15,14 @@ public class WelcomeScreen {
     private final UserService userService = new UserServiceImpl();
 
     public void showWelcome() {
-        System.out.println("Welcome! Please [l]ogin or [r]egister");
+        System.out.println("Welcome! Please [l]ogin or [r]egister or [s]how best results");
         String line = Utils.SCANNER.nextLine();
         if (line.equalsIgnoreCase("l")) {
             onLogin();
         } else if (line.equalsIgnoreCase("r")) {
             onRegister();
+        } else if (line.equalsIgnoreCase("s")) {
+            OnTable();
         }
     }
 
@@ -61,6 +64,20 @@ public class WelcomeScreen {
         System.out.println("Hello, " + user.getNick());
 
         startGameForUser(user);
+    }
+
+    private void OnTable()
+    {
+        if(userService.all().isEmpty()) {
+            System.out.println("There're no users");
+            return;
+        }
+
+        System.out.println("Table of records");
+        for (Map.Entry<String,User> entry : userService.all().entrySet()) {
+            User user = entry.getValue();
+            System.out.println(user.getNick()+" - "+user.getScore());
+        }
     }
 
     private static String promptForPass() {
