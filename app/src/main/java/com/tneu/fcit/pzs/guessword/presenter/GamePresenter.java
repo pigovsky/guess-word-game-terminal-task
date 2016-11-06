@@ -68,7 +68,7 @@ public class GamePresenter {
      */
     public void checkLetter(String letter) {
         letter = letter.toLowerCase();
-        int indexOfLetterInWord = getSecretWord().indexOf(letter);
+        int indexOfLetterInWord = getSecretWord().toLowerCase().indexOf(letter);
 
         if( indexOfLetterInWord >= 0 )
         {
