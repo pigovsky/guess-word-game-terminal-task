@@ -1,6 +1,7 @@
 package com.tneu.fcit.pzs.guessword.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by yp on 02.11.16.
@@ -8,6 +9,10 @@ import java.io.Serializable;
 public class User implements Serializable {
     String nick;
     String password;
+    String firstName;
+    String lastName;
+    String sex;
+    Date birth;
     int score;
 
     public User(String nick, String password) {
