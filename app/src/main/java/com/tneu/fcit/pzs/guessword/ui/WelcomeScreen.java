@@ -25,7 +25,23 @@ public class WelcomeScreen {
 
     private void onRegister() {
         System.out.println("Registration is started");
+
+        String nick = promptForAvailableNick();
+        String pass = promptForPass();
+
+        User user = new User(nick, pass);
+        userService.save(user);
+
+        startGameForUser(user);
+    }
+
+    /**
+     * Asks user to input available for registration nickname
+     * @return available nickname
+     */
+    private String promptForAvailableNick() {
         String nick;
+
         while (true) {
             nick = promptForNick();
             if (userService.all().get(nick) != null) {
@@ -34,10 +50,8 @@ public class WelcomeScreen {
                 break;
             }
         }
-        String pass = promptForPass();
-        User user = new User(nick, pass);
-        userService.save(user);
-        startGameForUser(user);
+
+        return nick;
     }
 
     private static void startGameForUser(User user) {
@@ -46,7 +60,18 @@ public class WelcomeScreen {
 
     private void onLogin() {
         System.out.println("Login started");
+        User user = loginUserByPass();
+
+        startGameForUser(user);
+    }
+
+    /**
+     * Get User object by asking nick and pass
+     * @return User object
+     */
+    private User loginUserByPass() {
         User user;
+
         while (true) {
             String nick = promptForNick();
             String pass = promptForPass();
@@ -57,7 +82,8 @@ public class WelcomeScreen {
                 break;
             }
         }
-        startGameForUser(user);
+
+        return user;
     }
 
     private static String promptForPass() {
