@@ -67,23 +67,41 @@ public class GamePresenter {
      * @param letter введена користувачем літера
      */
     public void checkLetter(String letter) {
-        letter = letter.toLowerCase();
-        int indexOfLetterInWord = getSecretWord().toLowerCase().indexOf(letter);
+        char charLetter = letter.toLowerCase().charAt(0);
+        char[] charsOfSecret = getSecretWord().toLowerCase().toCharArray();
+        String searchResult = "Not found";
 
-        if( indexOfLetterInWord >= 0 )
+        for(int i = 0; i < getSecretWord().length(); i++)
         {
-            char[] charsOfGuess = getUserCurrentGuess().toCharArray();
-            charsOfGuess[indexOfLetterInWord] = letter.toCharArray()[0];
-            setUserCurrentGuess(String.valueOf(charsOfGuess));
+            if(charsOfSecret[i] == charLetter)
+            {
+                searchResult = "Was found";
 
-            addScore(1);
-            gameView.letterHasBeenFound(letter);
-        }else{
+                if(getUserCurrentGuess().charAt(i)!='*')
+                {
+                    searchResult = "Letter was guessed before";
+                }
+
+                setUserCurrentGuess(getUserCurrentGuess().substring(0,i)+charLetter+getUserCurrentGuess().substring(i+1));
+            }
+        }
+
+        if(searchResult == "Not found") {
             addScore(-1);
             gameView.letterAbsent(letter);
+
         }
+        else if(searchResult == "Was found"){
+            addScore(1);
+            gameView.letterHasBeenFound(letter);
+        }else
+        {
+            gameView.letterWasGuessedBefore(letter);
+        }
+
         if(!getUserCurrentGuess().contains("*"))
             gameView.showCongratulations(getSecretWord());
+
 
         System.out.println(getUserCurrentGuess());
     }

@@ -30,8 +30,10 @@ public class GameViewImpl implements GameView {
                 System.exit(0);
             } else if (guess.length() == 1) {
                 game.checkLetter(guess);
-                if(needToStrartNewGame)
+                if(needToStrartNewGame) {
                     game = initNewGame();
+                    needToStrartNewGame = false;
+                }
             } else if (guess.length() > 1) {
                 game.checkWord(guess);
                 game = initNewGame();
@@ -54,6 +56,10 @@ public class GameViewImpl implements GameView {
         System.out.printf("Yes, secret word contains letter %s. Your score is %d\n", letter, user.getScore());
     }
 
+    @Override
+    public  void letterWasGuessedBefore(String letter){
+        System.out.printf("You already guessed letter %s. Don't cheat! Your score is the same %d\n", letter, user.getScore());
+    }
     @Override
     public void showGameOver(String guess) {
         System.err.printf("It is not %s. You have loose ((. Your score is %d\n", guess, user.getScore());
