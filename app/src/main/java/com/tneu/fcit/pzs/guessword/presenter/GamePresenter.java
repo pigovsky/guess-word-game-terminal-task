@@ -80,6 +80,7 @@ public class GamePresenter {
                 if(getUserCurrentGuess().charAt(i)!='*')
                 {
                     searchResult = "Letter was guessed before";
+                    continue;
                 }
 
                 setUserCurrentGuess(getUserCurrentGuess().substring(0,i)+charLetter+getUserCurrentGuess().substring(i+1));
