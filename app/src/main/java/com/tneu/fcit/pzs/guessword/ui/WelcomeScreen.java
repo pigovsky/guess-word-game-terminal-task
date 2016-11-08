@@ -90,7 +90,7 @@ public class WelcomeScreen {
     private void Addinfo()
     {
         User user = Loggining();
-        System.out.println(user.getFirstName() +" " +user.getLastName() +" " +user.getSex() +" " +user.getBirth());
+        System.out.println("First name: "+user.getFirstName() +", LastName: " +user.getLastName() +", Sex: " +user.getSex() +", BirthDay: " +user.getBirth());
 
         System.out.println("Enter your first name, please");
         user.setFirstName(Utils.SCANNER.nextLine());
