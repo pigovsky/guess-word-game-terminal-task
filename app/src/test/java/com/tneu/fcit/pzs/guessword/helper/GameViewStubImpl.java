@@ -17,6 +17,11 @@ public class GameViewStubImpl implements GameView {
 
     }
 
+    @Override
+    public void letterWasGuessedBefore(String letter) {
+
+    }
+
     public void showGameOver(String guess) {
 
     }

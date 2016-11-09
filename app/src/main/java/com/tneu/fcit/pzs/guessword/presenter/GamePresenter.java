@@ -4,9 +4,8 @@ import com.tneu.fcit.pzs.guessword.model.User;
 import com.tneu.fcit.pzs.guessword.service.UserService;
 import com.tneu.fcit.pzs.guessword.view.GameView;
 
-/**
- * Created by yp on 02.11.16.
- */
+enum Result { NotFound, WasFound, AlreadyGuessed}
+
 public class GamePresenter {
     private final User user;
     private final UserService userService;
@@ -33,7 +32,9 @@ public class GamePresenter {
     public String getUserCurrentGuess() {
         return userCurrentGuess;
     }
-
+    public void setUserCurrentGuess(String guessString) {
+        userCurrentGuess = guessString;
+    }
     /**
      * Перевіряє чи введене слово співпадає із секретним.
      * Коли так, то збільшує рахунок гравця на 100 балів і викликає {@link GameView#showCongratulations(String)},
@@ -44,9 +45,14 @@ public class GamePresenter {
      * @param guess слово, введене користувачем
      */
     public void checkWord(String guess) {
-        // TODO: Добавте код, який порівнює введене користувачем слово guess з secretWord (без врахування регістру)
-        // слід змінювати рахунок користувача методом addScore (див. нижче) та викликати метод
-        // gameView.showCongratulations чи gameView.showGameOver
+        if(guess.equalsIgnoreCase( getSecretWord() ))
+        {
+            addScore(100);
+            gameView.showCongratulations( getSecretWord() );
+        }else {
+            addScore(-100);
+            gameView.showGameOver(guess);
+        }
     }
 
     /**
@@ -60,9 +66,44 @@ public class GamePresenter {
      * @param letter введена користувачем літера
      */
     public void checkLetter(String letter) {
-        // TODO: Добавте код, який перевіряє чи присутня літера letter у secretWord, модифікує getUserCurrentGuess
-        // слід також змінювати рахунок користувача методом addScore та викликати метод gameView.letterHasBeenFound чи
-        // gameView.letterAbsent
+        char charLetter = letter.toLowerCase().charAt(0);
+        char[] charsOfSecret = getSecretWord().toLowerCase().toCharArray();
+        Result myResult = Result.NotFound;
+
+        for(int i = 0; i < getSecretWord().length(); i++)
+        {
+            if(charsOfSecret[i] == charLetter)
+            {
+                myResult = Result.WasFound;
+
+                if(getUserCurrentGuess().charAt(i)!='*')
+                {
+                    myResult = Result.AlreadyGuessed;
+                    continue;
+                }
+
+                setUserCurrentGuess(getUserCurrentGuess().substring(0,i)+charLetter+getUserCurrentGuess().substring(i+1));
+            }
+        }
+
+        if(myResult == Result.NotFound) {
+            addScore(-1);
+            gameView.letterAbsent(letter);
+
+        }
+        else if(myResult == Result.WasFound){
+            addScore(1);
+            gameView.letterHasBeenFound(letter);
+        }else
+        {
+            gameView.letterWasGuessedBefore(letter);
+        }
+
+        if(!getUserCurrentGuess().contains("*"))
+            gameView.showCongratulations(getSecretWord());
+
+
+        System.out.println(getUserCurrentGuess());
     }
 
     private void addScore(int value) {

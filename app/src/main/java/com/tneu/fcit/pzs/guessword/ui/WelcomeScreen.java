@@ -6,6 +6,10 @@ import com.tneu.fcit.pzs.guessword.service.UserServiceImpl;
 import com.tneu.fcit.pzs.guessword.utils.Utils;
 import com.tneu.fcit.pzs.guessword.view.GameViewImpl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
 /**
  * Created by yp on 02.11.16.
  */
@@ -14,13 +18,18 @@ public class WelcomeScreen {
     private final UserService userService = new UserServiceImpl();
 
     public void showWelcome() {
-        System.out.println("Welcome! Please [l]ogin or [r]egister");
+        System.out.println("Welcome! Please [l]ogin or [r]egister or [s]how best results or [a]dd info");
         String line = Utils.SCANNER.nextLine();
         if (line.equalsIgnoreCase("l")) {
             onLogin();
         } else if (line.equalsIgnoreCase("r")) {
             onRegister();
-        }
+        } else if (line.equalsIgnoreCase("s")) {
+            onTable();
+        } else if (line.equalsIgnoreCase("a")) {
+            setData();
+        }else
+            System.out.println("Unknown command!");
     }
 
     private void onRegister() {
@@ -36,7 +45,7 @@ public class WelcomeScreen {
         }
         String pass = promptForPass();
         User user = new User(nick, pass);
-        userService.save(user);
+        System.out.println("Hello, " + user.getNick());
         startGameForUser(user);
     }
 
@@ -45,6 +54,10 @@ public class WelcomeScreen {
     }
 
     private void onLogin() {
+        startGameForUser(logging());
+    }
+    private User logging()
+    {
         System.out.println("Login started");
         User user;
         while (true) {
@@ -57,9 +70,60 @@ public class WelcomeScreen {
                 break;
             }
         }
-        startGameForUser(user);
+        System.out.println("Hello, " + user.getNick());
+        return  user;
+    }
+    private void onTable()
+    {
+        if(userService.all().isEmpty()) {
+            System.out.println("There're no users");
+            return;
+        }
+
+        List<Map.Entry<String, User>> myList = new LinkedList<>(userService.all().entrySet());
+
+        Collections.sort( myList, (o1, o2) -> o1.getValue().compareTo( o2.getValue() ));
+
+        System.out.println("Table of records:");
+        for (Map.Entry<String, User> entry : myList)
+        {
+            System.out.println(entry.getValue().getNick()+" : "+entry.getValue().getScore());
+        }
     }
 
+    public void addInfo(User user, String firstName, String lastName, String sex, Date birthDate)
+    {
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setSex(sex);
+        user.setBirth(birthDate);
+
+        userService.save(user);
+    }
+
+    private void setData()
+    {
+        User user = logging();
+        System.out.println(user.getFirstName() +" " +user.getLastName() +" " +user.getSex() +" " +user.getBirth());
+        System.out.println("Enter your first name, please");
+        String firstName = Utils.SCANNER.nextLine();
+        System.out.println("Enter your last name, please");
+        String lastName = Utils.SCANNER.nextLine();
+        System.out.println("Enter your sex, please");
+        String sex = Utils.SCANNER.nextLine();
+
+        System.out.println("Enter your date of birth, please");
+        Date birthDate;
+        try {
+            String date = Utils.SCANNER.nextLine();
+            SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd");
+            birthDate = ft.parse(date);
+        }catch (ParseException e) {
+            birthDate = null;
+            System.out.println("Incorrect format of date!");
+        }
+        addInfo(user,firstName,lastName,sex,birthDate);
+    }
     private static String promptForPass() {
         System.out.println("Enter your pass, please");
         return Utils.SCANNER.nextLine();
