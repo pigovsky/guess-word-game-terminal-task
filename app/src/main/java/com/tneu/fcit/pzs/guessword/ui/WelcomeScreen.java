@@ -27,7 +27,7 @@ public class WelcomeScreen {
         } else if (line.equalsIgnoreCase("s")) {
             onTable();
         } else if (line.equalsIgnoreCase("a")) {
-            addInfo();
+            setData();
         }else
             System.out.println("Unknown command!");
     }
@@ -90,29 +90,39 @@ public class WelcomeScreen {
         }
     }
 
-    private void addInfo()
+    public void addInfo(User user, String firstName, String lastName, String sex, Date birthDate)
     {
-        User user = loggining();
-        System.out.println("First name: "+user.getFirstName() +", LastName: " +user.getLastName() +", Sex: " +user.getSex() +", BirthDay: " +user.getBirth());
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setSex(sex);
+        user.setBirth(birthDate);
 
-        System.out.println("Enter your first name, please");
-        user.setFirstName(Utils.SCANNER.nextLine());
-        System.out.println("Enter your last name, please");
-        user.setLastName(Utils.SCANNER.nextLine());
-        System.out.println("Enter your sex, please");
-        user.setSex(Utils.SCANNER.nextLine());
-
-        System.out.println("Enter your date of birth, please");
-        try {
-            String date = Utils.SCANNER.nextLine();
-            SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd");
-            user.setBirth(ft.parse(date));
-        }catch (ParseException e) {
-            System.out.println("Incorrect format of date!");
-        }
         userService.save(user);
     }
 
+    private void setData()
+    {
+        User user = loggining();
+        System.out.println(user.getFirstName() +" " +user.getLastName() +" " +user.getSex() +" " +user.getBirth());
+        System.out.println("Enter your first name, please");
+        String firstName = Utils.SCANNER.nextLine();
+        System.out.println("Enter your last name, please");
+        String lastName = Utils.SCANNER.nextLine();
+        System.out.println("Enter your sex, please");
+        String sex = Utils.SCANNER.nextLine();
+
+        System.out.println("Enter your date of birth, please");
+        Date birthDate;
+        try {
+            String date = Utils.SCANNER.nextLine();
+            SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd");
+            birthDate = ft.parse(date);
+        }catch (ParseException e) {
+            birthDate = null;
+            System.out.println("Incorrect format of date!");
+        }
+        addInfo(user,firstName,lastName,sex,birthDate);
+    }
     private static String promptForPass() {
         System.out.println("Enter your pass, please");
         return Utils.SCANNER.nextLine();

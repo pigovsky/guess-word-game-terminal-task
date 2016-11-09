@@ -27,6 +27,15 @@ public class User implements Serializable {
         this.birth = birth;
     }
 
+    public User(String nick, String password, String firstName, String lastName, String sex, Date birth) {
+        this.nick = nick;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.sex = sex;
+        this.birth = birth;
+    }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
