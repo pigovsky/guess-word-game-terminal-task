@@ -4,9 +4,8 @@ import com.tneu.fcit.pzs.guessword.model.User;
 import com.tneu.fcit.pzs.guessword.service.UserService;
 import com.tneu.fcit.pzs.guessword.view.GameView;
 
-/**
- * Created by yp on 02.11.16.
- */
+enum Result { NotFound, WasFound, AlreadyGuessed}
+
 public class GamePresenter {
     private final User user;
     private final UserService userService;
@@ -69,17 +68,17 @@ public class GamePresenter {
     public void checkLetter(String letter) {
         char charLetter = letter.toLowerCase().charAt(0);
         char[] charsOfSecret = getSecretWord().toLowerCase().toCharArray();
-        String searchResult = "Not found";
+        Result myResult = Result.NotFound;
 
         for(int i = 0; i < getSecretWord().length(); i++)
         {
             if(charsOfSecret[i] == charLetter)
             {
-                searchResult = "Was found";
+                myResult = Result.WasFound;
 
                 if(getUserCurrentGuess().charAt(i)!='*')
                 {
-                    searchResult = "Letter was guessed before";
+                    myResult = Result.AlreadyGuessed;
                     continue;
                 }
 
@@ -87,12 +86,12 @@ public class GamePresenter {
             }
         }
 
-        if(searchResult == "Not found") {
+        if(myResult == Result.NotFound) {
             addScore(-1);
             gameView.letterAbsent(letter);
 
         }
-        else if(searchResult == "Was found"){
+        else if(myResult == Result.WasFound){
             addScore(1);
             gameView.letterHasBeenFound(letter);
         }else
