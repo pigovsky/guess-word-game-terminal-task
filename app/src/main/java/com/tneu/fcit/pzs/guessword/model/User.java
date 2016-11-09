@@ -81,6 +81,6 @@ public class User implements Serializable {
         else if(this.getScore() == value.getScore())
             return 0;
         else return 1;
-        // reverse for descending table of records
+        // comparison is reversed for descending table of records
     }
 }
