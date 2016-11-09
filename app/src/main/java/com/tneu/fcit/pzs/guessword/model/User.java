@@ -36,6 +36,11 @@ public class User implements Serializable {
         this.birth = birth;
     }
 
+    public User(int score)
+    {
+        this.score = score;
+    }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }

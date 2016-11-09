@@ -54,9 +54,9 @@ public class WelcomeScreen {
     }
 
     private void onLogin() {
-        startGameForUser(loggining());
+        startGameForUser(logging());
     }
-    private User loggining()
+    private User logging()
     {
         System.out.println("Login started");
         User user;
@@ -84,6 +84,7 @@ public class WelcomeScreen {
 
         Collections.sort( myList, (o1, o2) -> o1.getValue().compareTo( o2.getValue() ));
 
+        System.out.println("Table of records:");
         for (Map.Entry<String, User> entry : myList)
         {
             System.out.println(entry.getValue().getNick()+" : "+entry.getValue().getScore());
@@ -102,7 +103,7 @@ public class WelcomeScreen {
 
     private void setData()
     {
-        User user = loggining();
+        User user = logging();
         System.out.println(user.getFirstName() +" " +user.getLastName() +" " +user.getSex() +" " +user.getBirth());
         System.out.println("Enter your first name, please");
         String firstName = Utils.SCANNER.nextLine();
