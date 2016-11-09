@@ -8,7 +8,7 @@ import com.tneu.fcit.pzs.guessword.view.GameViewImpl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by yp on 02.11.16.
@@ -27,7 +27,7 @@ public class WelcomeScreen {
         } else if (line.equalsIgnoreCase("s")) {
             onTable();
         } else if (line.equalsIgnoreCase("a")) {
-            addinfo();
+            addInfo();
         }else
             System.out.println("Unknown command!");
     }
@@ -80,14 +80,17 @@ public class WelcomeScreen {
             return;
         }
 
-        System.out.println("Table of records");
-        for (Map.Entry<String,User> entry : userService.all().entrySet()) {
-            User user = entry.getValue();
-            System.out.println(user.getNick()+" : "+user.getScore());
+        List<Map.Entry<String, User>> myList = new LinkedList<>(userService.all().entrySet());
+
+        Collections.sort( myList, (o1, o2) -> o1.getValue().compareTo( o2.getValue() ));
+
+        for (Map.Entry<String, User> entry : myList)
+        {
+            System.out.println(entry.getValue().getNick()+" : "+entry.getValue().getScore());
         }
     }
 
-    private void addinfo()
+    private void addInfo()
     {
         User user = loggining();
         System.out.println("First name: "+user.getFirstName() +", LastName: " +user.getLastName() +", Sex: " +user.getSex() +", BirthDay: " +user.getBirth());

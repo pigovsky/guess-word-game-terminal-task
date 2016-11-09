@@ -74,4 +74,13 @@ public class User implements Serializable {
     public void addScore(int value) {
         score += value;
     }
+
+    public int compareTo(User value) {
+        if(this.getScore() > value.getScore())
+            return -1;
+        else if(this.getScore() == value.getScore())
+            return 0;
+        else return 1;
+        // reverse for descending table of records
+    }
 }
