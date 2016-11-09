@@ -25,9 +25,9 @@ public class WelcomeScreen {
         } else if (line.equalsIgnoreCase("r")) {
             onRegister();
         } else if (line.equalsIgnoreCase("s")) {
-            OnTable();
+            onTable();
         } else if (line.equalsIgnoreCase("a")) {
-            Addinfo();
+            addinfo();
         }else
             System.out.println("Unknown command!");
     }
@@ -54,9 +54,9 @@ public class WelcomeScreen {
     }
 
     private void onLogin() {
-        startGameForUser(Loggining());
+        startGameForUser(loggining());
     }
-    private User Loggining()
+    private User loggining()
     {
         System.out.println("Login started");
         User user;
@@ -73,7 +73,7 @@ public class WelcomeScreen {
         System.out.println("Hello, " + user.getNick());
         return  user;
     }
-    private void OnTable()
+    private void onTable()
     {
         if(userService.all().isEmpty()) {
             System.out.println("There're no users");
@@ -87,9 +87,9 @@ public class WelcomeScreen {
         }
     }
 
-    private void Addinfo()
+    private void addinfo()
     {
-        User user = Loggining();
+        User user = loggining();
         System.out.println("First name: "+user.getFirstName() +", LastName: " +user.getLastName() +", Sex: " +user.getSex() +", BirthDay: " +user.getBirth());
 
         System.out.println("Enter your first name, please");
