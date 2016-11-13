@@ -9,10 +9,22 @@ public class User implements Serializable, Comparable {
     private String nick;
     private String password;
     private int score;
+    private String name;
+    private String surname;
+    private int birthYear;
 
     public User(String nick, String password) {
         this.nick = nick;
         this.password = password;
+    }
+
+    public User(String nick, String password, int score, String name, String surname, int birthYear) {
+        this.nick = nick;
+        this.password = password;
+        this.score = score;
+        this.name = name;
+        this.surname = surname;
+        this.birthYear = birthYear;
     }
 
     public String getNick() {
@@ -25,6 +37,18 @@ public class User implements Serializable, Comparable {
 
     public int getScore() {
         return score;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public int getBirthYear() {
+        return birthYear;
     }
 
     public void addScore(int value) {
