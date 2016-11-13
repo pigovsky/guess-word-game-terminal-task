@@ -6,12 +6,30 @@ import com.tneu.fcit.pzs.guessword.service.UserServiceImpl;
 import com.tneu.fcit.pzs.guessword.utils.Utils;
 import com.tneu.fcit.pzs.guessword.view.GameViewImpl;
 
+import java.util.Collections;
+import java.util.Map;
+import java.util.stream.Stream;
+
 /**
  * Created by yp on 02.11.16.
  */
 public class WelcomeScreen {
 
     private final UserService userService = new UserServiceImpl();
+
+    private static void startGameForUser(User user) {
+        new GameViewImpl(user).gameLoop();
+    }
+
+    private static String promptForPass() {
+        System.out.println("Enter your pass, please");
+        return Utils.SCANNER.nextLine();
+    }
+
+    private static String promptForNick() {
+        System.out.println("Enter your nick, please");
+        return Utils.SCANNER.nextLine();
+    }
 
     public void showWelcome() {
         System.out.println("Welcome! Please [l]ogin, [r]egister or [s]how best results");
@@ -40,6 +58,7 @@ public class WelcomeScreen {
 
     /**
      * Asks user to input available for registration nickname
+     *
      * @return available nickname
      */
     private String promptForAvailableNick() {
@@ -57,10 +76,6 @@ public class WelcomeScreen {
         return nick;
     }
 
-    private static void startGameForUser(User user) {
-        new GameViewImpl(user).gameLoop();
-    }
-
     private void onLogin() {
         System.out.println("Login started");
         User user = loginUserByPass();
@@ -71,6 +86,7 @@ public class WelcomeScreen {
 
     /**
      * Get User object by asking nick and pass
+     *
      * @return User object
      */
     private User loginUserByPass() {
@@ -90,17 +106,26 @@ public class WelcomeScreen {
         return user;
     }
 
-    private static String promptForPass() {
-        System.out.println("Enter your pass, please");
-        return Utils.SCANNER.nextLine();
-    }
-
-    private static String promptForNick() {
-        System.out.println("Enter your nick, please");
-        return Utils.SCANNER.nextLine();
-    }
-
+    /**
+     * Show table with results for all users in descending order
+     */
     private void onShowBestResults() {
+        final Map<String, User> allUsers = userService.all();
+        final int usersCount = allUsers.size();
 
+        if (usersCount <= 0) {
+            System.out.println("Sorry, there are no users to display results for");
+            return;
+        }
+
+        System.out.println("There are " + usersCount + " users in the table");
+        System.out.println("| name | score |");
+        System.out.println("| ---- | ----- |");
+
+        Stream.of(allUsers.values().toArray())
+                .sorted(Collections.reverseOrder())
+                .forEach(user -> System.out.println("| " + user + " |"));
+
+        System.out.println("| ---- | ----- |");
     }
 }
