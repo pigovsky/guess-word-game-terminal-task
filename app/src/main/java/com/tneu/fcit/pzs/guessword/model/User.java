@@ -31,10 +31,6 @@ public class User implements Serializable, Comparable {
         return nick;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public int getScore() {
         return score;
     }
@@ -53,6 +49,10 @@ public class User implements Serializable, Comparable {
 
     public void addScore(int value) {
         score += value;
+    }
+
+    public boolean isPasswordCorrect(String password) {
+        return this.password.equals(password);
     }
 
     @Override
