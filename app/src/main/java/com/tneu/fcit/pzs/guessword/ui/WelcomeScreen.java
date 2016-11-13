@@ -1,6 +1,7 @@
 package com.tneu.fcit.pzs.guessword.ui;
 
 import com.tneu.fcit.pzs.guessword.model.User;
+import com.tneu.fcit.pzs.guessword.presenter.UserPresenter;
 import com.tneu.fcit.pzs.guessword.service.UserService;
 import com.tneu.fcit.pzs.guessword.service.UserServiceImpl;
 import com.tneu.fcit.pzs.guessword.utils.Utils;
@@ -15,7 +16,7 @@ import java.util.stream.Stream;
  */
 public class WelcomeScreen {
 
-    private final UserService userService = new UserServiceImpl();
+    private final UserService userService = UserServiceImpl.getInstance();
 
     private static void startGameForUser(User user) {
         new GameViewImpl(user).gameLoop();
@@ -50,7 +51,7 @@ public class WelcomeScreen {
         }
 
         if (selectedItem == MenuItem.UPDATE_PROFILE) {
-            // TODO Implement profile update
+            onUpdateProfile();
             return;
         }
 
@@ -71,6 +72,12 @@ public class WelcomeScreen {
         System.out.println("Hello, " + user.getNick());
 
         startGameForUser(user);
+    }
+
+    private void onUpdateProfile() {
+        System.out.println("Update Profile is started");
+        final User user = loginUserByPass();
+        UserPresenter.updateProfile(user);
     }
 
     /**

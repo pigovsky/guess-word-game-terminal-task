@@ -40,16 +40,32 @@ public class User implements Serializable, Comparable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getSurname() {
         return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public int getBirthYear() {
         return birthYear;
     }
 
+    public void setBirthYear(int birthYear) {
+        this.birthYear = birthYear;
+    }
+
     public Gender getGender() {
         return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     public void addScore(int value) {
@@ -58,6 +74,14 @@ public class User implements Serializable, Comparable {
 
     public boolean isPasswordCorrect(String password) {
         return this.password.equals(password);
+    }
+
+    public void printShortInfo() {
+        System.out.println("Your current info is: ");
+        System.out.println("Name: " + this.getName());
+        System.out.println("Surname: " + this.getSurname());
+        System.out.println("Birth year: " + this.getBirthYear());
+        System.out.println("Gender: " + this.getGender());
     }
 
     @Override
