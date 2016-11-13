@@ -32,14 +32,31 @@ public class WelcomeScreen {
     }
 
     public void showWelcome() {
-        System.out.println("Welcome! Please [l]ogin, [r]egister or [s]how best results");
-        String line = Utils.SCANNER.nextLine();
-        if (line.equalsIgnoreCase("l")) {
+        WelcomeMenu.showOptions();
+        startGameFlow();
+    }
+
+    private void startGameFlow() {
+        final MenuItem selectedItem = WelcomeMenu.getSelectedItem();
+
+        if (selectedItem == MenuItem.LOGIN) {
             onLogin();
-        } else if (line.equalsIgnoreCase("r")) {
+            return;
+        }
+
+        if (selectedItem == MenuItem.REGISTER) {
             onRegister();
-        } else if (line.equalsIgnoreCase("s")) {
+            return;
+        }
+
+        if (selectedItem == MenuItem.UPDATE_PROFILE) {
+            // TODO Implement profile update
+            return;
+        }
+
+        if (selectedItem == MenuItem.SHOW_BEST_RESULTS) {
             onShowBestResults();
+            return;
         }
     }
 
