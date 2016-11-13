@@ -17,7 +17,7 @@ public class GameViewImpl implements GameView {
 
     public GameViewImpl(User user) {
         this.user = user;
-        userBase = new UserServiceImpl();
+        userBase = UserServiceImpl.getInstance();
         gameTasksService = new GameTasksServiceImpl();
     }
 
