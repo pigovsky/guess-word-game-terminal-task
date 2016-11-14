@@ -10,6 +10,8 @@ public interface GameView {
 
     void letterHasBeenFound(String letter);
 
+    void letterAlreadyFound(String letter);
+
     void showGameOver(String guess);
 
     void showCongratulations(String secretWord);

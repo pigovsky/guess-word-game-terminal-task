@@ -16,7 +16,9 @@ public class GameViewStubImpl implements GameView {
     public void letterHasBeenFound(String letter) {
 
     }
+    public void letterAlreadyFound(String letter){
 
+    }
     public void showGameOver(String guess) {
 
     }
