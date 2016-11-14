@@ -67,7 +67,7 @@ public class GameViewImpl implements GameView {
 
     private GamePresenter initNewGame() {
         GamePresenter game = new GamePresenter(user, userBase, this, Utils.getRandomItem(gameTasksService.getTasks()));
-        System.out.printf("Guess a word of %d letters\n", game.getSecretWord().length());
+        System.out.printf("\nGuess a word of %d letters\n", game.getSecretWord().length());
         showCurrentUserGuess(game.getUserCurrentGuess());
         return game;
     }

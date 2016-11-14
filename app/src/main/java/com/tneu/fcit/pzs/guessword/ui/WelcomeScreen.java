@@ -37,6 +37,7 @@ public class WelcomeScreen {
         String pass = promptForPass();
         User user = new User(nick, pass);
         userService.save(user);
+        System.out.println(String.format("\nHello, " + user.getNick() + "! Game started! Write \"exit\" to finish game."));
         startGameForUser(user);
     }
 
@@ -57,6 +58,7 @@ public class WelcomeScreen {
                 break;
             }
         }
+        System.out.println(String.format("\nHello, " + user.getNick() + "! Game started!  Write \"exit\" to finish game."));
         startGameForUser(user);
     }
 
