@@ -48,13 +48,14 @@ public class GamePresenter {
         // слід змінювати рахунок користувача методом addScore (див. нижче) та викликати метод
         // gameView.showCongratulations чи gameView.showGameOver
 
-        if (guess.IgnoringCase  == secretWord)
+
+        if (guess.equalsIgnoreCase(secretWord) )
         {
             addScore(100);
             System.out.println("Equal.");
             gameView.showCongratulations(getSecretWord());
         }
-        else if(guess.IgnoringCase  != secretWord)
+        else
         {
             addScore(-100);
             System.out.println("Not equal.");
@@ -76,25 +77,28 @@ public class GamePresenter {
         // TODO: Добавте код, який перевіряє чи присутня літера letter у secretWord, модифікує getUserCurrentGuess
         // слід також змінювати рахунок користувача методом addScore та викликати метод gameView.letterHasBeenFound чи
         // gameView.letterAbsent
-        int position = getSecretWord().indexOf(letter);
+        letter = letter.toLowerCase();
+        int indexOfLetterInWord = getSecretWord().indexOf(letter);
 
-        char[] c = getUserCurrentGuess().toCharArray();
+        if (indexOfLetterInWord >= 0) {
+            char[] charsOfGuess = getUserCurrentGuess().toCharArray();
+            charsOfGuess[indexOfLetterInWord] = letter.toCharArray()[0];
+            setUserCurrentGuess(String.valueOf(charsOfGuess));
 
-        for (int i = 0; i < c.length; i++) {
-
-            if (c[i] == position & position >= 0) {
-                setUserCurrentGuess(String.valueOf(c));
-                addScore(1);
-                gameView.letterHasBeenFound(letter);
-            } else {
-                addScore(-1);
-                gameView.letterAbsent();
-            }
+            addScore(1);
+            gameView.letterHasBeenFound(letter);
+        } else {
+            addScore(-1);
+            gameView.letterAbsent(letter);
         }
     }
 
     private void addScore(int value) {
         user.addScore(value);
         userService.save(user);
+    }
+
+    public void setUserCurrentGuess(String userCurrentGuess) {
+        this.userCurrentGuess = userCurrentGuess;
     }
 }

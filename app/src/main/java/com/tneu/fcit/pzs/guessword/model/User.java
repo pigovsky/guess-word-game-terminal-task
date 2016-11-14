@@ -16,7 +16,7 @@ public class User implements Serializable {
     Date birthDay;
 
 
-    public User(String nick, String password, String name,String secondName, String point,Date birthDay ) {
+    public User(String nick, String password) {
         this.nick = nick;
         this.password = password;
         this.name = name;
@@ -53,23 +53,23 @@ public class User implements Serializable {
     {
         this.point = point;
     }
-    public  void  setBirthDay(String birthDay)
+    public  void  setBirthDay(Date birthDay)
     {
         this.birthDay = birthDay;
     }
     // getters
-    public void getName() {
+    public String getName() {
         return name;
     }
-    public void getSecondName()
+    public String getSecondName()
     {
         return secondName;
     }
-    public void getPoint()
+    public String getPoint()
     {
         return point;
     }
-    public  void  getBirthDay()
+    public  Date  getBirthDay()
     {
         return birthDay;
     }

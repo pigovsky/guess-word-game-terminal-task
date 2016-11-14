@@ -6,6 +6,9 @@ import com.tneu.fcit.pzs.guessword.service.UserServiceImpl;
 import com.tneu.fcit.pzs.guessword.utils.Utils;
 import com.tneu.fcit.pzs.guessword.view.GameViewImpl;
 
+import java.util.Date;
+import java.util.Map;
+
 /**
  * Created by yp on 02.11.16.
  */
@@ -20,15 +23,15 @@ public class WelcomeScreen {
             onLogin();
         } else if (line.equalsIgnoreCase("r")) {
             onRegister();
-        } else if (line.equalsIgnoreCase("s"))
-        {
+        } else if (line.equalsIgnoreCase("s")) {
             seeResults();
         }
     }
+
     private void seeResults() {
         if (userService.all().isEmpty()) {
             System.out.println("There are no users to play game.");
-            break;
+            return;
         }
 
         System.out.println("Best results");
