@@ -6,6 +6,8 @@ import com.tneu.fcit.pzs.guessword.service.UserServiceImpl;
 import com.tneu.fcit.pzs.guessword.utils.Utils;
 import com.tneu.fcit.pzs.guessword.view.GameViewImpl;
 
+import java.util.*;
+
 /**
  * Created by yp on 02.11.16.
  */
@@ -14,12 +16,15 @@ public class WelcomeScreen {
     private final UserService userService = new UserServiceImpl();
 
     public void showWelcome() {
-        System.out.println("Welcome! Please [l]ogin or [r]egister");
+        System.out.println("Welcome! Please [l]ogin or [r]egister or [s]how best results");
         String line = Utils.SCANNER.nextLine();
         if (line.equalsIgnoreCase("l")) {
             onLogin();
         } else if (line.equalsIgnoreCase("r")) {
             onRegister();
+        }
+        else if(line.equalsIgnoreCase("s")){
+            onRecordTable();
         }
     }
 
@@ -60,6 +65,29 @@ public class WelcomeScreen {
         }
         System.out.println(String.format("\nHello, " + user.getNick() + "! Game started!  Write \"exit\" to finish game."));
         startGameForUser(user);
+    }
+
+    private  void onRecordTable()
+    {
+        if(userService.all().isEmpty()) {
+            System.out.println("There are no users. The database is empty.");
+            return;
+        }
+
+        List<Map.Entry<String, User>> myList = new LinkedList<>(userService.all().entrySet());
+        Collections.sort(myList, new Comparator<Map.Entry<String, User>>() {
+            @Override
+            public int compare(Map.Entry<String, User> user1, Map.Entry<String, User> user2) {
+                return (user1.getValue()).compareTo(user2.getValue());
+            }
+        });
+        int index = 1;
+        System.out.println("Table of records:");
+        for (Map.Entry<String, User> entry : myList)
+        {
+            System.out.println(index + ")" +entry.getValue().getNick()+" : "+entry.getValue().getScore());
+            index++;
+        }
     }
 
     private static String promptForPass() {
