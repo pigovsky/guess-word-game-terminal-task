@@ -77,20 +77,35 @@ public class GamePresenter {
         // TODO: Добавте код, який перевіряє чи присутня літера letter у secretWord, модифікує getUserCurrentGuess
         // слід також змінювати рахунок користувача методом addScore та викликати метод gameView.letterHasBeenFound чи
         // gameView.letterAbsent
-        letter = letter.toLowerCase();
-        int indexOfLetterInWord = getSecretWord().indexOf(letter);
+        char charLetter = letter.toLowerCase().charAt(0);
+        boolean findResult = false;
 
-        if (indexOfLetterInWord >= 0) {
-            char[] charsOfGuess = getUserCurrentGuess().toCharArray();
-            charsOfGuess[indexOfLetterInWord] = letter.toCharArray()[0];
-            setUserCurrentGuess(String.valueOf(charsOfGuess));
+        char[] charsOfGuess = getUserCurrentGuess().toCharArray();
+        for(int i=0; i<charsOfGuess.length;i++)
+        {
+            if( Character.toLowerCase(getSecretWord().charAt(i)) == charLetter)
+            {
+                charsOfGuess[i] = charLetter;
 
+                setUserCurrentGuess(getUserCurrentGuess().substring(0,i)+charLetter+getUserCurrentGuess().substring(i+1));
+                findResult = true;
+            }
+        }
+
+        if(findResult) {
             addScore(1);
             gameView.letterHasBeenFound(letter);
-        } else {
+        }
+        else
+        {
             addScore(-1);
             gameView.letterAbsent(letter);
         }
+
+        if(!getUserCurrentGuess().contains("*"))
+            gameView.showCongratulations(getSecretWord());
+
+        System.out.println(getUserCurrentGuess());
     }
 
     private void addScore(int value) {
