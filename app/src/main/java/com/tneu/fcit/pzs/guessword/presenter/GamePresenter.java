@@ -47,6 +47,20 @@ public class GamePresenter {
         // TODO: Добавте код, який порівнює введене користувачем слово guess з secretWord (без врахування регістру)
         // слід змінювати рахунок користувача методом addScore (див. нижче) та викликати метод
         // gameView.showCongratulations чи gameView.showGameOver
+
+
+        if (guess.equalsIgnoreCase(secretWord) )
+        {
+            addScore(100);
+            System.out.println("Equal.");
+            gameView.showCongratulations(getSecretWord());
+        }
+        else
+        {
+            addScore(-100);
+            System.out.println("Not equal.");
+            gameView.showGameOver(guess);
+        }
     }
 
     /**
@@ -63,10 +77,43 @@ public class GamePresenter {
         // TODO: Добавте код, який перевіряє чи присутня літера letter у secretWord, модифікує getUserCurrentGuess
         // слід також змінювати рахунок користувача методом addScore та викликати метод gameView.letterHasBeenFound чи
         // gameView.letterAbsent
+        char charLetter = letter.toLowerCase().charAt(0);
+        boolean findResult = false;
+
+        char[] charsOfGuess = getUserCurrentGuess().toCharArray();
+        for(int i=0; i<charsOfGuess.length;i++)
+        {
+            if( Character.toLowerCase(getSecretWord().charAt(i)) == charLetter)
+            {
+                charsOfGuess[i] = charLetter;
+
+                setUserCurrentGuess(getUserCurrentGuess().substring(0,i)+charLetter+getUserCurrentGuess().substring(i+1));
+                findResult = true;
+            }
+        }
+
+        if(findResult) {
+            addScore(1);
+            gameView.letterHasBeenFound(letter);
+        }
+        else
+        {
+            addScore(-1);
+            gameView.letterAbsent(letter);
+        }
+
+        if(!getUserCurrentGuess().contains("*"))
+            gameView.showCongratulations(getSecretWord());
+
+        System.out.println(getUserCurrentGuess());
     }
 
     private void addScore(int value) {
         user.addScore(value);
         userService.save(user);
+    }
+
+    public void setUserCurrentGuess(String userCurrentGuess) {
+        this.userCurrentGuess = userCurrentGuess;
     }
 }
