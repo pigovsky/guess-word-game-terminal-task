@@ -6,6 +6,8 @@ import com.tneu.fcit.pzs.guessword.service.UserServiceImpl;
 import com.tneu.fcit.pzs.guessword.utils.Utils;
 import com.tneu.fcit.pzs.guessword.view.GameViewImpl;
 
+import java.util.*;
+
 /**
  * Created by yp on 02.11.16.
  */
@@ -14,12 +16,32 @@ public class WelcomeScreen {
     private final UserService userService = new UserServiceImpl();
 
     public void showWelcome() {
-        System.out.println("Welcome! Please [l]ogin or [r]egister");
+        System.out.println("Welcome! Please [l]ogin, [r]egister or [s]how best results");
         String line = Utils.SCANNER.nextLine();
         if (line.equalsIgnoreCase("l")) {
             onLogin();
         } else if (line.equalsIgnoreCase("r")) {
             onRegister();
+        } else if (line.equalsIgnoreCase("s")) {
+            onShow();
+        }
+    }
+
+    private void onShow() {
+        System.out.println("Records table of users");
+
+        List<Map.Entry<String,User>> sortedEntries = new ArrayList(userService.all().entrySet());
+
+        Collections.sort(sortedEntries,
+                (e1, e2) -> {
+                    int a1 = e1.getValue().getScore();
+                    int a2 = e2.getValue().getScore();
+                    return a1 < a2 ? 1 : (a1 > a2 ? -1 : 0);
+                }
+        );
+
+        for (Map.Entry<String, User> user: sortedEntries) {
+            System.out.println(user.getValue().getNick()+"\t"+user.getValue().getScore());
         }
     }
 
@@ -42,7 +64,7 @@ public class WelcomeScreen {
     }
 
     private static void startGameForUser(User user) {
-        System.out.println("Hello, "+user.getNick()+"!");
+        System.out.println("Hello, " + user.getNick() + "!");
         new GameViewImpl(user).gameLoop();
     }
 
