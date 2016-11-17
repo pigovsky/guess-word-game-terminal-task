@@ -37,10 +37,12 @@ public class WelcomeScreen {
         String pass = promptForPass();
         User user = new User(nick, pass);
         userService.save(user);
+
         startGameForUser(user);
     }
 
     private static void startGameForUser(User user) {
+        System.out.println("Hello, "+user.getNick()+"!");
         new GameViewImpl(user).gameLoop();
     }
 
