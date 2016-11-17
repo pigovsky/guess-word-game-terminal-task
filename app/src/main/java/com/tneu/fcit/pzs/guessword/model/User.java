@@ -40,8 +40,13 @@ public class User implements Serializable {
         return surname;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public void setSurname(String surname) {
         this.surname = surname;
+
     }
 
     public boolean isSex() {
