@@ -6,14 +6,14 @@ import java.io.Serializable;
  * Created by yp on 02.11.16.
  */
 public class User implements Serializable {
-    String nick;
-    String password;
-    int score;
+    private String nick;
+    private String password;
+    private int score;
 
-    String name;
-    String surname;
-    boolean sex;
-    int birthYear;
+    private String name;
+    private String surname;
+    private boolean sex;
+    private int birthYear;
 
     public User(String nick, String password) {
         this(nick, password, "user", "", true, 2000);
@@ -55,6 +55,26 @@ public class User implements Serializable {
 
     public int getScore() {
         return score;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public void setSex(boolean sex) {
+        this.sex = sex;
+    }
+
+    public void setBirthYear(int birth) {
+        this.birthYear = birth;
     }
 
     public void addScore(int value) {
