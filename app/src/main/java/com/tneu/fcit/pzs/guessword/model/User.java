@@ -10,9 +10,23 @@ public class User implements Serializable {
     String password;
     int score;
 
+    String name;
+    String surname;
+    boolean sex;
+    int birthYear;
+
     public User(String nick, String password) {
+        this(nick, password, "user", "", true, 2000);
+    }
+
+    public User(String nick, String password, String name, String surname, boolean sex, int birthYear) {
         this.nick = nick;
         this.password = password;
+
+        this.name = name;
+        this.surname = surname;
+        this.sex = sex;
+        this.birthYear = birthYear;
     }
 
     public String getNick() {
@@ -21,6 +35,22 @@ public class User implements Serializable {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public boolean getSex() {
+        return sex;
+    }
+
+    public int getBirthYear() {
+        return birthYear;
     }
 
     public int getScore() {
