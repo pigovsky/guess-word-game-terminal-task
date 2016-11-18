@@ -27,7 +27,18 @@ public class WelcomeScreen {
             onRecordTable();
         }
     }
-
+    public void showWhereNotLogIn(){
+        System.out.println("Please [t]ry again or [r]egister or [e]xit");
+        String line = Utils.SCANNER.nextLine();
+        if (line.equalsIgnoreCase("t")) {
+            onLogin();
+        } else if (line.equalsIgnoreCase("r")) {
+            onRegister();
+        }
+        else if(line.equalsIgnoreCase("e")){
+            System.exit(0);
+        }
+    }
     private void onRegister() {
         System.out.println("Registration is started");
         String nick;
@@ -53,16 +64,15 @@ public class WelcomeScreen {
     private void onLogin() {
         System.out.println("Login started");
         User user;
-        while (true) {
+
             String nick = promptForNick();
             String pass = promptForPass();
             user = userService.check(nick, pass);
             if (user == null) {
                 System.err.println("Wrong nick or password");
-            } else {
-                break;
+                showWhereNotLogIn();
             }
-        }
+
         System.out.println(String.format("\nHello, " + user.getNick() + "! Game started!  Write \"exit\" to finish game."));
         startGameForUser(user);
     }
