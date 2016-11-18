@@ -53,7 +53,7 @@ public class WelcomeScreen {
                 addUserInformaion(user);
             }
             else if(line.equalsIgnoreCase("e")){
-
+                editUserInformation(user);
             }
             else if(line.equalsIgnoreCase("d")){
                 showUserInformation(user);
@@ -65,12 +65,12 @@ public class WelcomeScreen {
     }
 
     public void showUserInformation(User user){
-        System.out.println("nick :" + user.getNick());
-        System.out.println("password :" + user.getPassword());
-        System.out.println("name :" + user.getName());
-        System.out.println("surname :" + user.getSurname());
-        System.out.println("birth :" + user.getBirth());
-        System.out.println("sex :" + user.getSex());
+        System.out.println("nick: " + user.getNick());
+        System.out.println("password: " + user.getPassword());
+        System.out.println("name: " + user.getName());
+        System.out.println("surname: " + user.getSurname());
+        System.out.println("birth: " + user.getBirth());
+        System.out.println("sex: " + user.getSex());
     }
 
     public void addUserInformaion(User user){
@@ -101,6 +101,68 @@ public class WelcomeScreen {
             user.setBirth(birth);
         userService.save(user);
         System.out.println("Data saved");
+    }
+
+    public void editUserInformation(User user) {
+        while (true) {
+            System.out.println("What you want to edit" +
+                    "\n[password]" +
+                    "\n[name]" +
+                    "\n[surname]" +
+                    "\n[sex]" +
+                    "\n[birth]" +
+                    "\n[exit]");
+
+            String property = Utils.SCANNER.nextLine().toLowerCase();
+
+            if (property.equals("exit"))
+                break;
+            else if(property.equals("password")){
+                System.out.print("New password: ");
+                String password = Utils.SCANNER.nextLine().toLowerCase();
+                if(password.length() > 0 || password != null){
+                    user.setPassword(password);
+                }
+            }
+            else if(property.equals("name")){
+                System.out.print("New name: ");
+                String name = Utils.SCANNER.nextLine().toLowerCase();
+                if(name.length() > 0 || name != null){
+                    user.setName(name);
+                }
+            }
+            else if(property.equals("surname")){
+                System.out.print("New surname: ");
+                String surname = Utils.SCANNER.nextLine().toLowerCase();
+                if(surname.length() > 0 || surname != null){
+                    user.setSurname(surname);
+                }
+            }
+            else if(property.equals("sex")){
+                System.out.print("New sex: ");
+                String sex = Utils.SCANNER.nextLine().toLowerCase();
+                if(sex.length() > 0 || sex != null){
+                    user.setSex(sex);
+                }
+            }
+            else if(property.equals("birth")){
+                System.out.print("New birth: ");
+                Date birth;
+                try {
+                    SimpleDateFormat format = new SimpleDateFormat ("yyyy-MM-dd");
+                    String date = Utils.SCANNER.nextLine();
+                    birth = format.parse(date);
+                }catch (ParseException e) {
+                    birth = null;
+                    System.out.println("Incorrect format of date!");
+                }
+                if(birth != null){
+                    user.setBirth(birth);
+                }
+            }
+            userService.save(user);
+            System.out.println("Data saved");
+        }
     }
 
     private void onRegister() {
