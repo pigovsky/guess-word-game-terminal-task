@@ -47,6 +47,14 @@ public class GamePresenter {
         // TODO: Добавте код, який порівнює введене користувачем слово guess з secretWord (без врахування регістру)
         // слід змінювати рахунок користувача методом addScore (див. нижче) та викликати метод
         // gameView.showCongratulations чи gameView.showGameOver
+
+        if (secretWord.toLowerCase().equals(guess.toLowerCase())) {
+            addScore(100);
+            gameView.showCongratulations(secretWord);
+        } else {
+            addScore(-100);
+            gameView.showGameOver(secretWord);
+        }
     }
 
     /**
@@ -63,6 +71,20 @@ public class GamePresenter {
         // TODO: Добавте код, який перевіряє чи присутня літера letter у secretWord, модифікує getUserCurrentGuess
         // слід також змінювати рахунок користувача методом addScore та викликати метод gameView.letterHasBeenFound чи
         // gameView.letterAbsent
+
+        if (secretWord.toLowerCase().contains(letter.toLowerCase())) {
+            StringBuilder Word = new StringBuilder(userCurrentGuess);
+            for (int i = 0; i < secretWord.length(); i++)
+                if (secretWord.toLowerCase().charAt(i) == letter.toLowerCase().charAt(0))
+                    Word.setCharAt(i, secretWord.charAt(i));
+            userCurrentGuess = Word.toString();
+
+            addScore(1);
+            gameView.letterHasBeenFound(letter.toLowerCase());
+        } else {
+            addScore(-1);
+            gameView.letterAbsent(letter.toLowerCase());
+        }
     }
 
     private void addScore(int value) {
