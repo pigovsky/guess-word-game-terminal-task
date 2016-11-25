@@ -6,10 +6,7 @@ import com.tneu.fcit.pzs.guessword.service.UserServiceImpl;
 import com.tneu.fcit.pzs.guessword.utils.Utils;
 import com.tneu.fcit.pzs.guessword.view.GameViewImpl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by yp on 02.11.16.
@@ -88,7 +85,41 @@ public class WelcomeScreen {
                 break;
             }
         }
+
+        System.out.println("Do you want to change your data, [y]es or no");
+        String line = Utils.SCANNER.nextLine();
+        if (line.equalsIgnoreCase("y"))
+            onChange(user);
+
         startGameForUser(user);
+    }
+
+    private void onChange(User user) {
+        Map<String, Runnable> commands = new HashMap<>();
+
+        commands.put("password", () -> user.setPassword(promptForPass()));
+        commands.put("name", () -> user.setName(promptForName()));
+        commands.put("surname", () -> user.setSurname(promptForSurname()));
+        commands.put("sex", () -> user.setSex(promptForSex()));
+        commands.put("birth", () -> user.setBirthYear(promptForBirth()));
+
+        while (true) {
+            System.out.println("What you want to edit" +
+                    "\n[password]" +
+                    "\n[name]" +
+                    "\n[surname]" +
+                    "\n[sex]" +
+                    "\n[birth]" +
+                    "\n[exit]");
+
+            String line = Utils.SCANNER.nextLine().toLowerCase();
+
+            if (line.equals("exit"))
+                break;
+
+            commands.get(line).run();
+            userService.save(user);
+        }
     }
 
     private static String promptForPass() {

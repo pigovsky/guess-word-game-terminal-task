@@ -54,6 +54,25 @@ public class User implements Serializable {
     public int getScore() {
         return score;
     }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public void setSex(boolean sex) {
+        this.sex = sex;
+    }
+
+    public void setBirthYear(int birth) {
+        this.birthYear = birth;
+    }
 
     public void addScore(int value) {
         score += value;
