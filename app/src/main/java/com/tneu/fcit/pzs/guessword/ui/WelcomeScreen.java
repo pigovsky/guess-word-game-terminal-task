@@ -6,6 +6,11 @@ import com.tneu.fcit.pzs.guessword.service.UserServiceImpl;
 import com.tneu.fcit.pzs.guessword.utils.Utils;
 import com.tneu.fcit.pzs.guessword.view.GameViewImpl;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by yp on 02.11.16.
  */
@@ -20,6 +25,25 @@ public class WelcomeScreen {
             onLogin();
         } else if (line.equalsIgnoreCase("r")) {
             onRegister();
+        } else if (line.equalsIgnoreCase("s")) {
+            onShow();
+        }
+    }
+
+    private void onShow() {
+        System.out.println("Records table of users");
+        List<Map.Entry<String, User>> sortedEntries = new ArrayList(userService.all().entrySet());
+
+        Collections.sort(sortedEntries,
+                (e1, e2) -> {
+                    int a1 = e1.getValue().getScore();
+                    int a2 = e2.getValue().getScore();
+                    return a1 < a2 ? 1 : (a1 > a2 ? -1 : 0);
+                }
+        );
+
+        for (Map.Entry<String, User> user : sortedEntries) {
+            System.out.println(user.getValue().getNick() + "\t" + user.getValue().getScore());
         }
     }
 
