@@ -70,8 +70,8 @@ public class GamePresenter {
         if (secretWord.toLowerCase().contains(letter.toLowerCase())) {
             StringBuilder Word = new StringBuilder(userCurrentGuess);
             for (int i = 0; i < secretWord.length(); i++)
-                if (secretWord.substring(i) == letter)
-                    Word.setCharAt(i, letter.charAt(0));
+                if (secretWord.toLowerCase().charAt(i) == letter.toLowerCase().charAt(0))
+                    Word.setCharAt(i, secretWord.charAt(i));
             userCurrentGuess = Word.toString();
 
             addScore(1);
