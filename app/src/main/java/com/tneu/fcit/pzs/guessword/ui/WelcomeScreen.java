@@ -41,6 +41,7 @@ public class WelcomeScreen {
     }
 
     private static void startGameForUser(User user) {
+        System.out.println(String.format("Hello, %s!", user.getNick()));
         new GameViewImpl(user).gameLoop();
     }
 
