@@ -6,6 +6,8 @@ import com.tneu.fcit.pzs.guessword.service.UserServiceImpl;
 import com.tneu.fcit.pzs.guessword.utils.Utils;
 import com.tneu.fcit.pzs.guessword.view.GameViewImpl;
 
+import java.util.Map;
+
 /**
  * Created by yp on 02.11.16.
  */
@@ -14,12 +16,23 @@ public class WelcomeScreen {
     private final UserService userService = new UserServiceImpl();
 
     public void showWelcome() {
-        System.out.println("Welcome! Please [l]ogin or [r]egister");
+        System.out.println("Welcome! Please [l]ogin or [r]egister or [s]how table");
         String line = Utils.SCANNER.nextLine();
         if (line.equalsIgnoreCase("l")) {
             onLogin();
         } else if (line.equalsIgnoreCase("r")) {
             onRegister();
+        } else if (line.equalsIgnoreCase("s")){
+            showTable();
+        }
+    }
+
+    private void showTable()
+    {
+        System.out.println("Table of records");
+        for (Map.Entry<String,User> entry : userService.all().entrySet()) {
+            User user = entry.getValue();
+            System.out.println(user.getNick()+" - "+user.getScore());
         }
     }
 
@@ -62,7 +75,7 @@ public class WelcomeScreen {
         startGameForUser(user);
     }
 
-    private static void showWelcome(User user) {
+    private void showWelcome(User user) {
         System.out.println("Welcome " + user.getNick());
     }
     private static String promptForPass() {
