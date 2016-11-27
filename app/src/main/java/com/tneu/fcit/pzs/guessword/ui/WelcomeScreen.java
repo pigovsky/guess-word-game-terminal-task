@@ -37,6 +37,7 @@ public class WelcomeScreen {
         String pass = promptForPass();
         User user = new User(nick, pass);
         userService.save(user);
+        showWelcome(user);
         startGameForUser(user);
     }
 
@@ -57,9 +58,13 @@ public class WelcomeScreen {
                 break;
             }
         }
+        showWelcome(user);
         startGameForUser(user);
     }
 
+    private static void showWelcome(User user) {
+        System.out.println("Welcome " + user.getNick());
+    }
     private static String promptForPass() {
         System.out.println("Enter your pass, please");
         return Utils.SCANNER.nextLine();
