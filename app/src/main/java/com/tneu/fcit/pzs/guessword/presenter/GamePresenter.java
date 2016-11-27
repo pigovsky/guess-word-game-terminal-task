@@ -34,6 +34,8 @@ public class GamePresenter {
         return userCurrentGuess;
     }
 
+    public void setGuess(String str) { userCurrentGuess = str; }
+
     /**
      * Перевіряє чи введене слово співпадає із секретним.
      * Коли так, то збільшує рахунок гравця на 100 балів і викликає {@link GameView#showCongratulations(String)},
@@ -44,9 +46,14 @@ public class GamePresenter {
      * @param guess слово, введене користувачем
      */
     public void checkWord(String guess) {
-        // TODO: Добавте код, який порівнює введене користувачем слово guess з secretWord (без врахування регістру)
-        // слід змінювати рахунок користувача методом addScore (див. нижче) та викликати метод
-        // gameView.showCongratulations чи gameView.showGameOver
+        if(guess.equalsIgnoreCase( getSecretWord() ))
+        {
+            addScore(100);
+            gameView.showCongratulations( getSecretWord() );
+        }else {
+            addScore(-100);
+            gameView.showGameOver(guess);
+        }
     }
 
     /**
@@ -60,9 +67,33 @@ public class GamePresenter {
      * @param letter введена користувачем літера
      */
     public void checkLetter(String letter) {
-        // TODO: Добавте код, який перевіряє чи присутня літера letter у secretWord, модифікує getUserCurrentGuess
-        // слід також змінювати рахунок користувача методом addScore та викликати метод gameView.letterHasBeenFound чи
-        // gameView.letterAbsent
+        if( getSecretWord().contains(letter.toLowerCase())) {
+            letter = letter.toLowerCase();
+            char[] charsOfSecret = getSecretWord().toCharArray();
+            char[] charsOfGuess  = getUserCurrentGuess().toCharArray();
+            for(int i=0; i< getSecretWord().length();i++)
+            {
+                if(charsOfSecret[i] == letter.charAt(0))
+                {
+                    if(charsOfGuess[i] == '*')
+                    {
+                        charsOfGuess[i] = charsOfSecret[i];
+                        addScore(1);
+                        gameView.letterHasBeenFound(letter);
+                    }else
+                        System.out.println("Guessed already!");
+                }
+            }
+            setGuess(String.valueOf(charsOfGuess));
+        } else{
+            addScore(-1);
+            gameView.letterAbsent(letter);
+        }
+
+        if(!getUserCurrentGuess().contains("*"))
+        {
+            gameView.StartNewGame();
+        }
     }
 
     private void addScore(int value) {
