@@ -14,4 +14,5 @@ public interface GameView {
 
     void showCongratulations(String secretWord);
 
+    void StartNewGame();
 }
