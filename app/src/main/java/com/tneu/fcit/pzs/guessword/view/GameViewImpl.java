@@ -52,6 +52,10 @@ public class GameViewImpl implements GameView {
     }
 
     @Override
+    public void letterAlreadyFound(String letter) {
+        System.out.printf("Yes already found this letter %s. Your score is %d\n", letter, user.getScore());
+    }
+    @Override
     public void showGameOver(String guess) {
         System.err.printf("It is not %s. You have loose ((. Your score is %d\n", guess, user.getScore());
     }
@@ -63,7 +67,7 @@ public class GameViewImpl implements GameView {
 
     private GamePresenter initNewGame() {
         GamePresenter game = new GamePresenter(user, userBase, this, Utils.getRandomItem(gameTasksService.getTasks()));
-        System.out.printf("Guess a word of %d letters\n", game.getSecretWord().length());
+        System.out.printf("\nGuess a word of %d letters\n", game.getSecretWord().length());
         showCurrentUserGuess(game.getUserCurrentGuess());
         return game;
     }
