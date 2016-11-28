@@ -22,6 +22,7 @@ public class GameViewImpl implements GameView {
     }
 
     public void gameLoop() {
+
         GamePresenter game = initNewGame();
         while (true) {
             String guess = Utils.SCANNER.nextLine();
