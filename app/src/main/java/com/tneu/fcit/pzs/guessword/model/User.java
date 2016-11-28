@@ -59,11 +59,11 @@ public class User implements Serializable {
         this.sex = sex;
     }
 
-    public Date getBirthYear() {
+    public Date getBirth() {
         return birth;
     }
 
-    public void setBirthYear(Date birth) {
+    public void setBirth(Date birth) {
         this.birth = birth;
     }
 
