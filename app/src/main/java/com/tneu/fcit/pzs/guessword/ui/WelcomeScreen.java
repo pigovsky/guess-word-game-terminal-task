@@ -35,13 +35,13 @@ public class WelcomeScreen {
         ArrayList list = (ArrayList) userService.all();
 
         Collections.sort(list, (o1, o2) -> {
-            int a1 = ((User)o1).getScore();
-            int a2 = ((User)o1).getScore();
+            int a1 = ((User) o1).getScore();
+            int a2 = ((User) o1).getScore();
             return a1 < a2 ? 1 : (a1 > a2 ? -1 : 0);
         });
 
         for (Object user : list) {
-            System.out.println(((User)user).getNick() + "\t" + ((User)user).getScore());
+            System.out.println(((User) user).getNick() + " " + ((User) user).getName() + "\t" + ((User) user).getScore());
         }
     }
 
@@ -57,7 +57,11 @@ public class WelcomeScreen {
             }
         }
         String pass = promptForPass();
-        User user = new User(nick, pass);
+        String name = promptForName();
+        String surname = promptForSurname();
+        boolean sex = promptForGender();
+        int birth = promptForBirth();
+        User user = new User(nick, pass, name, surname, sex, birth);
         userService.save(user);
         startGameForUser(user);
     }
@@ -91,5 +95,45 @@ public class WelcomeScreen {
     private static String promptForNick() {
         System.out.println("Enter your nick, please");
         return Utils.SCANNER.nextLine();
+    }
+    private String promptForName() {
+        System.out.println("Enter your name, please");
+        return Utils.SCANNER.nextLine();
+    }
+
+    private String promptForSurname() {
+        System.out.println("Enter your surname, please");
+        return Utils.SCANNER.nextLine();
+    }
+
+    private boolean promptForGender() {
+        boolean sex;
+        System.out.println("Enter your gender (woman or man), please");
+        while (true) {
+            String Sex = Utils.SCANNER.nextLine();
+            if (Sex.toLowerCase().equals("woman")) {
+                sex = false;
+                break;
+            } else if (Sex.toLowerCase().equals("man")) {
+                sex = true;
+                break;
+            } else
+                System.out.println("Please enter 'woman' or 'man'");
+        }
+        return sex;
+    }
+
+    private int promptForBirth() {
+        int year;
+        while (true) {
+            System.out.println("Enter your birth year, please");
+            try {
+                year = Utils.SCANNER.nextInt();
+                break;
+            } catch (Exception e) {
+                System.out.println("Please enter real year");
+            }
+        }
+        return year;
     }
 }
