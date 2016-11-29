@@ -26,7 +26,6 @@ public class WelcomeScreen {
             showRecord();
 
         }
-
     }
 
     private void showRecord() {
@@ -84,7 +83,41 @@ public class WelcomeScreen {
                 break;
             }
         }
+
+        System.out.println("Do you want to change your data, [y]es or no");
+        String line = Utils.SCANNER.nextLine();
+        if (line.equalsIgnoreCase("y"))
+            change(user);
+
         startGameForUser(user);
+    }
+
+    private void change(User user) {
+        Map<String, Runnable> commands = new HashMap<>();
+
+        commands.put("password", () -> user.setPassword(promptForPass()));
+        commands.put("name", () -> user.setName(promptForName()));
+        commands.put("surname", () -> user.setSurname(promptForSurname()));
+        commands.put("gender", () -> user.setGender(promptForGender()));
+        commands.put("birth", () -> user.setBirthYear(promptForBirth()));
+
+        while (true) {
+            System.out.println("What you want to edit" +
+                    "\n[password]" +
+                    "\n[name]" +
+                    "\n[surname]" +
+                    "\n[gender]" +
+                    "\n[birth]" +
+                    "\n[exit]");
+
+            String line = Utils.SCANNER.nextLine().toLowerCase();
+
+            if(line.equals("exit"))
+                break;
+
+            commands.get(line).run();
+            userService.save(user);
+        }
     }
 
     private static String promptForPass() {
@@ -96,6 +129,7 @@ public class WelcomeScreen {
         System.out.println("Enter your nick, please");
         return Utils.SCANNER.nextLine();
     }
+
     private String promptForName() {
         System.out.println("Enter your name, please");
         return Utils.SCANNER.nextLine();

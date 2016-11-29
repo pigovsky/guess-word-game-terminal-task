@@ -7,6 +7,7 @@ import java.io.Serializable;
  */
 public class User implements Serializable {
     private String nick;
+
     private String password;
     private int score;
     private String name;
@@ -57,5 +58,25 @@ public class User implements Serializable {
 
     public int getBirthYear() {
         return birthYear;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public void setGender(boolean gender) {
+        this.gender = gender;
+    }
+
+    public void setBirthYear(int birthYear) {
+        this.birthYear = birthYear;
     }
 }
