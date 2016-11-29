@@ -20,6 +20,20 @@ public class User implements Serializable {
     private Gender gender;
     private Date birtday;
 
+    public User(String nick, String password) {
+        this.nick = nick;
+        this.password = password;
+    }
+
+    public User(String nick, String password, String name, String surname, Gender gender, Date birtday) {
+        this.nick = nick;
+        this.password = password;
+        this.name = name;
+        this.surname = surname;
+        this.gender = gender;
+        this.birtday = birtday;
+    }
+
     public String getName() {
         return name;
     }
@@ -50,11 +64,6 @@ public class User implements Serializable {
 
     public void setBirtday(Date birtday) {
         this.birtday = birtday;
-    }
-
-    public User(String nick, String password) {
-        this.nick = nick;
-        this.password = password;
     }
 
     public String getNick() {
