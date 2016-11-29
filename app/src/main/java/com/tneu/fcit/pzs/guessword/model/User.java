@@ -1,6 +1,10 @@
 package com.tneu.fcit.pzs.guessword.model;
 
+import com.tneu.fcit.pzs.guessword.utils.Utils;
+
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -68,4 +72,46 @@ public class User implements Serializable {
     public void addScore(int value) {
         score += value;
     }
+
+    public void updateInfo() {
+
+        System.out.println("Do you want update information about yourseft ?(y or n)");
+
+        String line = Utils.SCANNER.nextLine();
+        if ( line.equalsIgnoreCase("y") ) {
+
+            System.out.println("Enter you name :");
+            setName(Utils.SCANNER.nextLine());
+
+            System.out.println("Enter you surname :");
+            setSurname(Utils.SCANNER.nextLine());
+
+            System.out.println("Enter you Birth Year(in format yyyy-mm-dd): ");
+            line = Utils.SCANNER.nextLine();
+
+            try{
+                SimpleDateFormat dataFormat = new SimpleDateFormat("yyyy-mm-dd");
+                setBirtday(dataFormat.parse(line));
+            }
+            catch(ParseException p){
+                System.out.format("%s",p.getMessage());
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                updateInfo();
+            }
+
+            System.out.println("Enter you gender female or male (f,m) :");
+            line = Utils.SCANNER.nextLine();
+            if ( line.equalsIgnoreCase("f") ) {
+                setGender(Gender.Female);
+            } else if ( line.equalsIgnoreCase("m") )
+                setGender(Gender.Male);
+        }
+
+    }
+
+
 }
