@@ -57,6 +57,11 @@ public class GameViewImpl implements GameView {
     }
 
     @Override
+    public void letterAlreadyFound(String letter) {
+        System.out.printf("Already found this letter %s. Your score is %d\n", letter, user.getScore());
+    }
+
+    @Override
     public void showCongratulations(String secretWord) {
         System.out.printf("The word is really %s. You have win! Your score is %d\n", secretWord, user.getScore());
     }

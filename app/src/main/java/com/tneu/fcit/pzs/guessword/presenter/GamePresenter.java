@@ -7,6 +7,8 @@ import com.tneu.fcit.pzs.guessword.view.GameView;
 /**
  * Created by yp on 02.11.16.
  */
+enum IsFound{ not, yes, exist }
+
 public class GamePresenter {
     private final User user;
     private final UserService userService;
@@ -34,6 +36,9 @@ public class GamePresenter {
         return userCurrentGuess;
     }
 
+    public void setUserCurrentGuess(String guessString) {
+                userCurrentGuess = guessString;
+            }
     /**
      * Перевіряє чи введене слово співпадає із секретним.
      * Коли так, то збільшує рахунок гравця на 100 балів і викликає {@link GameView#showCongratulations(String)},
@@ -44,6 +49,14 @@ public class GamePresenter {
      * @param guess слово, введене користувачем
      */
     public void checkWord(String guess) {
+        if(guess.equalsIgnoreCase( getSecretWord() ))
+                    {
+                                addScore(100);
+                    gameView.showCongratulations( getSecretWord() );
+                }else {
+                        addScore(-100);
+                        gameView.showGameOver(guess);
+                    }
         // TODO: Добавте код, який порівнює введене користувачем слово guess з secretWord (без врахування регістру)
         // слід змінювати рахунок користувача методом addScore (див. нижче) та викликати метод
         // gameView.showCongratulations чи gameView.showGameOver
@@ -60,6 +73,37 @@ public class GamePresenter {
      * @param letter введена користувачем літера
      */
     public void checkLetter(String letter) {
+        char symbol = letter.toLowerCase().charAt(0);
+                char[] charsInSecretWord = getSecretWord().toLowerCase().toCharArray();
+                IsFound isFound = IsFound.not;
+                for (int i = 0; i < getSecretWord().length(); i++) {
+                        if (charsInSecretWord[i] == symbol) {
+                                if (getUserCurrentGuess().charAt(i) == symbol) {
+                                        isFound = IsFound.exist;
+                                    } else {
+                                        isFound = IsFound.yes;
+                                        if (i == 0) {
+                                                setUserCurrentGuess(String.format(getUserCurrentGuess().substring(0, i) + Character.toUpperCase(symbol) + getUserCurrentGuess().substring(i + 1)));
+                                            } else {
+                                                setUserCurrentGuess(String.format(getUserCurrentGuess().substring(0, i) + symbol + getUserCurrentGuess().substring(i + 1)));
+                                            }
+                                    }
+                            }
+                    }
+                if (isFound == IsFound.yes) {
+                        addScore(1);
+                        gameView.letterHasBeenFound(letter);
+                    } else if (isFound == IsFound.exist) {
+                        gameView.letterAlreadyFound(letter);
+                    } else {
+                        addScore(-1);
+                        gameView.letterAbsent(letter);
+                    }
+
+                        System.out.println(getUserCurrentGuess());
+
+                        if (!getUserCurrentGuess().contains("*"))
+                        gameView.showCongratulations(getSecretWord());
         // TODO: Добавте код, який перевіряє чи присутня літера letter у secretWord, модифікує getUserCurrentGuess
         // слід також змінювати рахунок користувача методом addScore та викликати метод gameView.letterHasBeenFound чи
         // gameView.letterAbsent
