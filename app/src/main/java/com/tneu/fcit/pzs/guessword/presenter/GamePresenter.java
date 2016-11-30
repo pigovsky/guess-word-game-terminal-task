@@ -47,6 +47,18 @@ public class GamePresenter {
         // TODO: Добавте код, який порівнює введене користувачем слово guess з secretWord (без врахування регістру)
         // слід змінювати рахунок користувача методом addScore (див. нижче) та викликати метод
         // gameView.showCongratulations чи gameView.showGameOver
+
+
+        if (guess.equalsIgnoreCase(secretWord) )
+        {
+            addScore(100);
+            gameView.showCongratulations(getSecretWord());
+        }
+        else
+        {
+            addScore(-100);
+            gameView.showGameOver(guess);
+        }
     }
 
     /**
@@ -63,10 +75,43 @@ public class GamePresenter {
         // TODO: Добавте код, який перевіряє чи присутня літера letter у secretWord, модифікує getUserCurrentGuess
         // слід також змінювати рахунок користувача методом addScore та викликати метод gameView.letterHasBeenFound чи
         // gameView.letterAbsent
+        char Letters = letter.toLowerCase().charAt(0);
+        boolean Result = false;
+
+        char[] guessing = getUserCurrentGuess().toCharArray();
+        for(int i=0; i<guessing.length;i++)
+        {
+            if( Character.toLowerCase(getSecretWord().charAt(i)) == Letters)
+            {
+                guessing[i] = Letters;
+
+                setUserCurrentGuess(getUserCurrentGuess().substring(0,i)+Letters+getUserCurrentGuess().substring(i+1));
+                Result = true;
+            }
+        }
+
+        if(Result) {
+            addScore(100);
+            gameView.letterHasBeenFound(letter);
+        }
+        else
+        {
+            addScore(-100);
+            gameView.letterAbsent(letter);
+        }
+
+        if(!getUserCurrentGuess().contains("*"))
+            gameView.showCongratulations(getSecretWord());
+
+        System.out.println(getUserCurrentGuess());
     }
 
     private void addScore(int value) {
         user.addScore(value);
         userService.save(user);
+    }
+
+    public void setUserCurrentGuess(String userCurrentGuess) {
+        this.userCurrentGuess = userCurrentGuess;
     }
 }
