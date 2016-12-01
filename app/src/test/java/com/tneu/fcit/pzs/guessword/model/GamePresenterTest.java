@@ -7,7 +7,7 @@ import com.tneu.fcit.pzs.guessword.service.UserServiceTest;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by yp on 02.11.16.

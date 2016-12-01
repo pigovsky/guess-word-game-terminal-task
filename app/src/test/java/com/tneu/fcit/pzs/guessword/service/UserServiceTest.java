@@ -4,7 +4,8 @@ import com.tneu.fcit.pzs.guessword.model.User;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by yp on 02.11.16.
