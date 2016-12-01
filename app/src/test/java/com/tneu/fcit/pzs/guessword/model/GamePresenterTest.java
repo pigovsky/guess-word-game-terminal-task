@@ -32,6 +32,7 @@ public class GamePresenterTest {
         assertEquals("When user has entered wrong word, score must be decreased by -100", -100, game.getUser().getScore());
     }
 
+    @Test
     public void checkInitialConditions() {
         assertEquals("Before game started, score must be 0", 0, game.getUser().getScore());
         assertEquals("Before game started, current guess must be " + START_GUESS, START_GUESS, game.getUserCurrentGuess());

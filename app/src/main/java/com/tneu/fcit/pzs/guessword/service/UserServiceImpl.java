@@ -45,6 +45,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User check(String nick, String password) {
         User user = all().get(nick);
-        return user != null && password.equals(user.getPassword()) ? user : null;
+        return user != null && user.isPasswordCorrect(password) ? user : null;
     }
 }

@@ -12,16 +12,17 @@ public class User implements Serializable, Comparable {
     private String name;
     private String surname;
     private int birthYear;
+    private Gender gender;
 
     public User(String nick, String password) {
         this.nick = nick;
         this.password = password;
     }
 
-    public User(String nick, String password, int score, String name, String surname, int birthYear) {
+    public User(String nick, String password, Gender gender, String name, String surname, int birthYear) {
         this.nick = nick;
         this.password = password;
-        this.score = score;
+        this.gender = gender;
         this.name = name;
         this.surname = surname;
         this.birthYear = birthYear;
@@ -29,10 +30,6 @@ public class User implements Serializable, Comparable {
 
     public String getNick() {
         return nick;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public int getScore() {
@@ -51,8 +48,16 @@ public class User implements Serializable, Comparable {
         return birthYear;
     }
 
+    public Gender getGender() {
+        return gender;
+    }
+
     public void addScore(int value) {
         score += value;
+    }
+
+    public boolean isPasswordCorrect(String password) {
+        return this.password.equals(password);
     }
 
     @Override

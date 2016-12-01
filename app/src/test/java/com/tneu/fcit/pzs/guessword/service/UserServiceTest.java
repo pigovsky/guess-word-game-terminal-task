@@ -29,7 +29,7 @@ public class UserServiceTest {
         User fromBase = userService.check(NICK, PASS);
         assertNotNull("No such user", fromBase);
         assertEquals("wrong nick", NICK, fromBase.getNick());
-        assertEquals("wrong pass", PASS, fromBase.getPassword());
+        assertEquals("wrong pass", fromBase.isPasswordCorrect(PASS), true);
     }
 
     @Test
@@ -43,9 +43,9 @@ public class UserServiceTest {
         assertNotNull("No such user", fromBase);
         assertNotNull("No such user", fromBase2);
         assertEquals("wrong nick", NICK, fromBase.getNick());
-        assertEquals("wrong pass", PASS, fromBase.getPassword());
+        assertEquals("wrong pass", fromBase.isPasswordCorrect(PASS), true);
         assertEquals("wrong nick", NICK2, fromBase2.getNick());
-        assertEquals("wrong pass", PASS2, fromBase2.getPassword());
+        assertEquals("wrong pass", fromBase.isPasswordCorrect(PASS), true);
     }
 
 }
