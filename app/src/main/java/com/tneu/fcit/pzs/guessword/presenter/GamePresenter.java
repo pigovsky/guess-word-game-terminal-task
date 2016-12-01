@@ -40,6 +40,7 @@ public class GamePresenter {
 
     /**
      * Check if input guess is correct one and print game results
+     *
      * @param guess User input word
      */
     public void checkWord(String guess) {
@@ -56,6 +57,7 @@ public class GamePresenter {
 
     /**
      * Check if input letter is correct and print game results
+     *
      * @param letter User input letter
      */
     public void checkLetter(String letter) {
