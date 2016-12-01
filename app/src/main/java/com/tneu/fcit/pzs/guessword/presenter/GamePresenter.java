@@ -34,39 +34,57 @@ public class GamePresenter {
         return userCurrentGuess;
     }
 
-    /**
-     * Перевіряє чи введене слово співпадає із секретним.
-     * Коли так, то збільшує рахунок гравця на 100 балів і викликає {@link GameView#showCongratulations(String)},
-     * інакше --- зменшує його рахунок на 100 балів і викликає {@link GameView#showGameOver(String)}.
-     *
-     * Метод нечутливий до регістру букв.
-     *
-     * @param guess слово, введене користувачем
-     */
-    public void checkWord(String guess) {
-        // TODO: Добавте код, який порівнює введене користувачем слово guess з secretWord (без врахування регістру)
-        // слід змінювати рахунок користувача методом addScore (див. нижче) та викликати метод
-        // gameView.showCongratulations чи gameView.showGameOver
+    private void setUserCurrentGuess(String guess) {
+        userCurrentGuess = guess;
     }
 
     /**
-     * Перевіряє чи введена буква присутня у секретному слові.
-     * Коли так, то збільшує рахунок гравця на одиницю, замінює у відповідній позиції (позиціях) зірочку в
-     * {@link #userCurrentGuess} на вгадану букву і викликає {@link GameView#letterHasBeenFound(String)},
-     * інакше --- зменшує його рахунок на одиницю і викликає {@link GameView#letterAbsent(String)}.
+     * Check if input guess is correct one and print game results
      *
-     * Метод нечутливий до регістру букв.
+     * @param guess User input word
+     */
+    public void checkWord(String guess) {
+        boolean isCorrectGuess = this.secretWord.equalsIgnoreCase(guess);
+
+        if (isCorrectGuess) {
+            addScore(100);
+            this.gameView.showCongratulations(getSecretWord());
+        } else {
+            addScore(-100);
+            this.gameView.showGameOver(guess);
+        }
+    }
+
+    /**
+     * Check if input letter is correct and print game results
      *
-     * @param letter введена користувачем літера
+     * @param letter User input letter
      */
     public void checkLetter(String letter) {
-        // TODO: Добавте код, який перевіряє чи присутня літера letter у secretWord, модифікує getUserCurrentGuess
-        // слід також змінювати рахунок користувача методом addScore та викликати метод gameView.letterHasBeenFound чи
-        // gameView.letterAbsent
+        boolean isLetterInSecretWord = checkLetterInSecretWord(letter);
+
+        if (isLetterInSecretWord) {
+            String currentGuessState = unveilLetterFromSecretWord(letter);
+            setUserCurrentGuess(currentGuessState);
+            addScore(1);
+            this.gameView.letterHasBeenFound(letter);
+        } else {
+            addScore(-1);
+            this.gameView.letterAbsent(letter);
+        }
     }
 
     private void addScore(int value) {
         user.addScore(value);
         userService.save(user);
+    }
+
+    private boolean checkLetterInSecretWord(String letter) {
+        return getSecretWord().toLowerCase().contains(letter.toLowerCase());
+    }
+
+    private String unveilLetterFromSecretWord(String letter) {
+        final String guessedLettersRegex = "[^" + letter.toUpperCase() + letter.toLowerCase() + "]";
+        return getSecretWord().replaceAll(guessedLettersRegex, "*");
     }
 }
