@@ -9,9 +9,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by yp on 02.11.16.
- */
+
 public class GamePresenterTest {
     public static final String SECRET_WORD = "Community";
     public static final String START_GUESS = "*********";
