@@ -1,6 +1,7 @@
 package com.tneu.fcit.pzs.guessword.ui;
 
 import com.tneu.fcit.pzs.guessword.model.User;
+import com.tneu.fcit.pzs.guessword.presenter.UserPresenter;
 import com.tneu.fcit.pzs.guessword.service.UserService;
 import com.tneu.fcit.pzs.guessword.service.UserServiceImpl;
 import com.tneu.fcit.pzs.guessword.utils.Utils;
@@ -15,7 +16,8 @@ import java.util.stream.Stream;
  */
 public class WelcomeScreen {
 
-    private final UserService userService = new UserServiceImpl();
+    private final UserService userService = UserServiceImpl.getInstance();
+    private final UserPresenter userPresenter = new UserPresenter(userService);
 
     private static void startGameForUser(User user) {
         new GameViewImpl(user).gameLoop();
@@ -32,14 +34,31 @@ public class WelcomeScreen {
     }
 
     public void showWelcome() {
-        System.out.println("Welcome! Please [l]ogin, [r]egister or [s]how best results");
-        String line = Utils.SCANNER.nextLine();
-        if (line.equalsIgnoreCase("l")) {
+        WelcomeMenu.showOptions();
+        startGameFlow();
+    }
+
+    private void startGameFlow() {
+        final MenuItem selectedItem = WelcomeMenu.getSelectedItem();
+
+        if (selectedItem == MenuItem.LOGIN) {
             onLogin();
-        } else if (line.equalsIgnoreCase("r")) {
+            return;
+        }
+
+        if (selectedItem == MenuItem.REGISTER) {
             onRegister();
-        } else if (line.equalsIgnoreCase("s")) {
+            return;
+        }
+
+        if (selectedItem == MenuItem.UPDATE_PROFILE) {
+            onUpdateProfile();
+            return;
+        }
+
+        if (selectedItem == MenuItem.SHOW_BEST_RESULTS) {
             onShowBestResults();
+            return;
         }
     }
 
@@ -54,6 +73,12 @@ public class WelcomeScreen {
         System.out.println("Hello, " + user.getNick());
 
         startGameForUser(user);
+    }
+
+    private void onUpdateProfile() {
+        System.out.println("Update Profile is started");
+        final User user = loginUserByPass();
+        userPresenter.updateProfile(user);
     }
 
     /**

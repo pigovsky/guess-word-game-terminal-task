@@ -15,6 +15,11 @@ import java.util.Map;
 public class UserServiceImpl implements UserService {
 
     public static final String USER_DB = "USER_DB";
+    private static UserServiceImpl instance = new UserServiceImpl();
+
+    public static UserServiceImpl getInstance() {
+        return instance;
+    }
 
     @Override
     public void save(User user) {
