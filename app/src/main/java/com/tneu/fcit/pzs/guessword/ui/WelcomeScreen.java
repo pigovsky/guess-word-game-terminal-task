@@ -8,7 +8,9 @@ import com.tneu.fcit.pzs.guessword.utils.Utils;
 import com.tneu.fcit.pzs.guessword.view.GameViewImpl;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -135,22 +137,21 @@ public class WelcomeScreen {
      * Show table with results for all users in descending order
      */
     private void onShowBestResults() {
-        final Map<String, User> allUsers = userService.all();
-        final int usersCount = allUsers.size();
+        final List<User> topUsers = getTopUsers();
 
-        if (usersCount <= 0) {
-            System.out.println("Sorry, there are no users to display results for");
-            return;
-        }
-
-        System.out.println("There are " + usersCount + " users in the table");
+        System.out.println("There are " + topUsers.size() + " users in the table");
         System.out.println("| name | score |");
         System.out.println("| ---- | ----- |");
-
-        Stream.of(allUsers.values().toArray())
-                .sorted(Collections.reverseOrder())
-                .forEach(user -> System.out.println("| " + user + " |"));
-
+        Stream.of(topUsers).forEach(user -> System.out.println("| " + user + " |"));
         System.out.println("| ---- | ----- |");
+    }
+
+    private List<User> getTopUsers() {
+        final Map<String, User> allUsers = userService.all();
+
+        return Stream.of(allUsers.values().toArray())
+                .sorted(Collections.reverseOrder())
+                .map(user -> (User) user)
+                .collect(Collectors.toList());
     }
 }
