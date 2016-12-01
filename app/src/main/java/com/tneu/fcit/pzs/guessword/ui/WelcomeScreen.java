@@ -42,7 +42,7 @@ public class WelcomeScreen {
 
         System.out.println("Records");
         for (User user : sortedUser)
-            System.out.println(String.format("%s\t%s", user.getNick(),user.getScore()));
+            System.out.format("%s\t%s", user.getNick(),user.getScore());
 
     }
 
@@ -60,6 +60,7 @@ public class WelcomeScreen {
         }
         String pass = promptForPass();
         User user = new User(nick, pass);
+        user.updateInfo();
         userService.save(user);
         startGameForUser(user);
     }
@@ -82,6 +83,7 @@ public class WelcomeScreen {
                 break;
             }
         }
+        user.updateInfo();
         startGameForUser(user);
     }
 
