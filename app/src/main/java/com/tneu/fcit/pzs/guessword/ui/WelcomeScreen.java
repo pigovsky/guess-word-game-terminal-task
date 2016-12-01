@@ -14,18 +14,37 @@ public class WelcomeScreen {
     private final UserService userService = new UserServiceImpl();
 
     public void showWelcome() {
-        System.out.println("Welcome! Please [l]ogin or [r]egister");
+        System.out.println("Welcome! Please [l]ogin, [r]egister or [s]how best results");
         String line = Utils.SCANNER.nextLine();
         if (line.equalsIgnoreCase("l")) {
             onLogin();
         } else if (line.equalsIgnoreCase("r")) {
             onRegister();
+        } else if (line.equalsIgnoreCase("s")) {
+            onShowBestResults();
         }
     }
 
     private void onRegister() {
         System.out.println("Registration is started");
+
+        String nick = promptForAvailableNick();
+        String pass = promptForPass();
+
+        User user = new User(nick, pass);
+        userService.save(user);
+        System.out.println("Hello, " + user.getNick());
+
+        startGameForUser(user);
+    }
+
+    /**
+     * Asks user to input available for registration nickname
+     * @return available nickname
+     */
+    private String promptForAvailableNick() {
         String nick;
+
         while (true) {
             nick = promptForNick();
             if (userService.all().get(nick) != null) {
@@ -34,10 +53,8 @@ public class WelcomeScreen {
                 break;
             }
         }
-        String pass = promptForPass();
-        User user = new User(nick, pass);
-        userService.save(user);
-        startGameForUser(user);
+
+        return nick;
     }
 
     private static void startGameForUser(User user) {
@@ -46,7 +63,19 @@ public class WelcomeScreen {
 
     private void onLogin() {
         System.out.println("Login started");
+        User user = loginUserByPass();
+        System.out.println("Hello, " + user.getNick());
+
+        startGameForUser(user);
+    }
+
+    /**
+     * Get User object by asking nick and pass
+     * @return User object
+     */
+    private User loginUserByPass() {
         User user;
+
         while (true) {
             String nick = promptForNick();
             String pass = promptForPass();
@@ -57,7 +86,8 @@ public class WelcomeScreen {
                 break;
             }
         }
-        startGameForUser(user);
+
+        return user;
     }
 
     private static String promptForPass() {
@@ -68,5 +98,9 @@ public class WelcomeScreen {
     private static String promptForNick() {
         System.out.println("Enter your nick, please");
         return Utils.SCANNER.nextLine();
+    }
+
+    private void onShowBestResults() {
+
     }
 }
