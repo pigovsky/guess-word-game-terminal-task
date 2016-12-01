@@ -32,9 +32,11 @@ public class UserServiceImpl implements UserService {
     public Map<String, User> all() {
         Map<String, User> userMap;
         try {
-            userMap = (Map<String, User>) new ObjectInputStream(new FileInputStream(USER_DB))
-                .readObject();
+            ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(USER_DB));
+            userMap = (Map<String, User>) objectInputStream.readObject();
         } catch (Exception e) {
+            System.err.println("Error reading USER_DB");
+            System.err.println(e);
             userMap = new HashMap<>();
         }
         return userMap;
