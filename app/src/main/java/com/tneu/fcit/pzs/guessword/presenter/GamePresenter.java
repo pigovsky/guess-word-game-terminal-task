@@ -44,6 +44,13 @@ public class GamePresenter {
      * @param guess слово, введене користувачем
      */
     public void checkWord(String guess) {
+        if (this.secretWord.equalsIgnoreCase(guess)){
+            user.addScore(100);//user.addScore(user.getScore()+100);
+            gameView.showCongratulations(secretWord);
+        }else{
+            user.addScore(-100);//user.addScore(user.getScore()-100);
+            gameView.showGameOver(guess);
+        }
         // TODO: Добавте код, який порівнює введене користувачем слово guess з secretWord (без врахування регістру)
         // слід змінювати рахунок користувача методом addScore (див. нижче) та викликати метод
         // gameView.showCongratulations чи gameView.showGameOver
@@ -60,6 +67,17 @@ public class GamePresenter {
      * @param letter введена користувачем літера
      */
     public void checkLetter(String letter) {
+
+        if (getSecretWord().toLowerCase().contains(letter.toLowerCase())) {
+            this.userCurrentGuess=getSecretWord().replaceAll(letter.toUpperCase() + letter.toLowerCase(), "*");
+            user.addScore(1);
+            //user.addScore(user.getScore()+1);
+            gameView.letterHasBeenFound(letter);
+        } else {
+            user.addScore(-1);
+            //user.addScore(user.getScore()-1);
+            gameView.letterAbsent(letter);
+        }
         // TODO: Добавте код, який перевіряє чи присутня літера letter у secretWord, модифікує getUserCurrentGuess
         // слід також змінювати рахунок користувача методом addScore та викликати метод gameView.letterHasBeenFound чи
         // gameView.letterAbsent
