@@ -5,7 +5,8 @@ import com.tneu.fcit.pzs.guessword.view.GameView;
 /**
  * Created by yp on 03.11.16.
  */
-public class GameViewStubImpl implements GameView {
+public class
+GameViewStubImpl implements GameView {
     public void showCurrentUserGuess(String userCurrentGuess) {
 
     }
