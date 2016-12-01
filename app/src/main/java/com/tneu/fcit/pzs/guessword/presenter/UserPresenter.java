@@ -3,13 +3,16 @@ package com.tneu.fcit.pzs.guessword.presenter;
 import com.tneu.fcit.pzs.guessword.model.Gender;
 import com.tneu.fcit.pzs.guessword.model.User;
 import com.tneu.fcit.pzs.guessword.service.UserService;
-import com.tneu.fcit.pzs.guessword.service.UserServiceImpl;
 import com.tneu.fcit.pzs.guessword.utils.Utils;
 
 public class UserPresenter {
-    private static final UserService userService = UserServiceImpl.getInstance();
+    private UserService userService;
 
-    public static void updateProfile(User user) {
+    public UserPresenter(UserService userService) {
+        this.userService = userService;
+    }
+
+    public void updateProfile(User user) {
         user.printShortInfo();
 
         System.out.println("Enter new name: ");

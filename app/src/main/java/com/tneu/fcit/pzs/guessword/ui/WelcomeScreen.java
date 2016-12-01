@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 public class WelcomeScreen {
 
     private final UserService userService = UserServiceImpl.getInstance();
+    private final UserPresenter userPresenter = new UserPresenter(userService);
 
     private static void startGameForUser(User user) {
         new GameViewImpl(user).gameLoop();
@@ -77,7 +78,7 @@ public class WelcomeScreen {
     private void onUpdateProfile() {
         System.out.println("Update Profile is started");
         final User user = loginUserByPass();
-        UserPresenter.updateProfile(user);
+        userPresenter.updateProfile(user);
     }
 
     /**
