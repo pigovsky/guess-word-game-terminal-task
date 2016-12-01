@@ -14,14 +14,22 @@ public class WelcomeScreen {
     private final UserService userService = new UserServiceImpl();
 
     public void showWelcome() {
-        System.out.println("Welcome! Please [l]ogin or [r]egister");
+        System.out.println("Welcome! Please [l]ogin or [r]egister or [t]able");
         String line = Utils.SCANNER.nextLine();
         if (line.equalsIgnoreCase("l")) {
             onLogin();
         } else if (line.equalsIgnoreCase("r")) {
             onRegister();
-        }
+        } else if (line.equalsIgnoreCase("t")) {
+		table();
+	}
     }
+
+    private void table() {
+    	for (Map.Entry<String,User> mapEntry : userService.all().entrySet()) {
+             System.out.println(mapEntry .getValue().getNick()+" - "+mapEntry .getValue().getScore());
+	}
+    }  
 
     private void onRegister() {
         System.out.println("Registration is started");
