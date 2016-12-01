@@ -6,9 +6,9 @@ import java.io.Serializable;
  * Created by yp on 02.11.16.
  */
 public class User implements Serializable {
-    String nick;
-    String password;
-    int score;
+    private String nick;
+    private String password;
+    private int score;
 
     public User(String nick, String password) {
         this.nick = nick;
