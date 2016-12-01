@@ -15,6 +15,11 @@ import java.util.Map;
 public class UserServiceImpl implements UserService {
 
     public static final String USER_DB = "USER_DB";
+    private static UserServiceImpl instance = new UserServiceImpl();
+
+    public static UserServiceImpl getInstance() {
+        return instance;
+    }
 
     @Override
     public void save(User user) {
@@ -32,9 +37,11 @@ public class UserServiceImpl implements UserService {
     public Map<String, User> all() {
         Map<String, User> userMap;
         try {
-            userMap = (Map<String, User>) new ObjectInputStream(new FileInputStream(USER_DB))
-                .readObject();
+            ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(USER_DB));
+            userMap = (Map<String, User>) objectInputStream.readObject();
         } catch (Exception e) {
+            System.err.println("Error reading USER_DB");
+            System.err.println(e);
             userMap = new HashMap<>();
         }
         return userMap;
@@ -43,6 +50,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User check(String nick, String password) {
         User user = all().get(nick);
-        return user != null && password.equals(user.getPassword()) ? user : null;
+        return user != null && user.isPasswordCorrect(password) ? user : null;
     }
 }

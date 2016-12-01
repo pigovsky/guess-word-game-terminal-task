@@ -1,9 +1,9 @@
 package com.tneu.fcit.pzs.guessword.view;
 
+import com.tneu.fcit.pzs.guessword.model.User;
 import com.tneu.fcit.pzs.guessword.presenter.GamePresenter;
 import com.tneu.fcit.pzs.guessword.service.GameTasksService;
 import com.tneu.fcit.pzs.guessword.service.GameTasksServiceImpl;
-import com.tneu.fcit.pzs.guessword.model.User;
 import com.tneu.fcit.pzs.guessword.service.UserServiceImpl;
 import com.tneu.fcit.pzs.guessword.utils.Utils;
 
@@ -17,7 +17,7 @@ public class GameViewImpl implements GameView {
 
     public GameViewImpl(User user) {
         this.user = user;
-        userBase = new UserServiceImpl();
+        userBase = UserServiceImpl.getInstance();
         gameTasksService = new GameTasksServiceImpl();
     }
 
