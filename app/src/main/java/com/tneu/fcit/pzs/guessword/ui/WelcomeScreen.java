@@ -6,6 +6,9 @@ import com.tneu.fcit.pzs.guessword.service.UserServiceImpl;
 import com.tneu.fcit.pzs.guessword.utils.Utils;
 import com.tneu.fcit.pzs.guessword.view.GameViewImpl;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+
 /**
  * Created by yp on 02.11.16.
  */
@@ -14,12 +17,33 @@ public class WelcomeScreen {
     private final UserService userService = new UserServiceImpl();
 
     public void showWelcome() {
-        System.out.println("Welcome! Please [l]ogin or [r]egister");
+        System.out.println("Welcome! Please [l]ogin, [r]egister or [s]how best results");
         String line = Utils.SCANNER.nextLine();
         if (line.equalsIgnoreCase("l")) {
             onLogin();
         } else if (line.equalsIgnoreCase("r")) {
             onRegister();
+        }else if (line.equalsIgnoreCase("s")) {
+            onShow();
+        }
+    }
+
+    private void onShow() {
+        System.out.println("Records table of users");
+
+        ArrayList allUser = (ArrayList) userService.all();
+
+        allUser.sort(new Comparator() {
+            @Override
+            public int compare(Object object1, Object object2) {
+                int user1 = ((User) object1).getScore();
+                int user2 = ((User) object1).getScore();
+                return user1 < user2 ? 1 : (user1 > user2 ? -1 : 0);
+            }
+        });
+
+        for (Object user : allUser) {
+            System.out.println(((User) user).getNick() + "\t" + ((User) user).getScore());
         }
     }
 
