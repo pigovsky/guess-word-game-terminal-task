@@ -8,6 +8,6 @@ import com.tneu.fcit.pzs.guessword.ui.WelcomeScreen;
 public class App {
     public static void main(String[] args) {
         new WelcomeScreen().showWelcome();
-		//8yy8y8
+
     }
 }
