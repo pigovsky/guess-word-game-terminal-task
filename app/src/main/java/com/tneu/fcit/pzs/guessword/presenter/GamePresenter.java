@@ -1,4 +1,4 @@
-package com.tneu.fcit.pzs.guessword.presenter;
+﻿package com.tneu.fcit.pzs.guessword.presenter;
 
 import com.tneu.fcit.pzs.guessword.model.User;
 import com.tneu.fcit.pzs.guessword.service.UserService;
@@ -34,6 +34,10 @@ public class GamePresenter {
         return userCurrentGuess;
     }
 
+    private void setUserGuess(String guess) {
+         userCurrentGuess = guess;
+    }
+
     /**
      * Перевіряє чи введене слово співпадає із секретним.
      * Коли так, то збільшує рахунок гравця на 100 балів і викликає {@link GameView#showCongratulations(String)},
@@ -44,9 +48,14 @@ public class GamePresenter {
      * @param guess слово, введене користувачем
      */
     public void checkWord(String guess) {
-        // TODO: Добавте код, який порівнює введене користувачем слово guess з secretWord (без врахування регістру)
-        // слід змінювати рахунок користувача методом addScore (див. нижче) та викликати метод
-        // gameView.showCongratulations чи gameView.showGameOver
+        if(guess.equals(getSecretWord()))
+        {
+            addScore(100);
+            gameView.showCongratulations(getSecretWord());
+        }else {
+            gameView.showGameOver(guess);
+            addScore(-100);
+        }
     }
 
     /**
@@ -60,9 +69,22 @@ public class GamePresenter {
      * @param letter введена користувачем літера
      */
     public void checkLetter(String letter) {
-        // TODO: Добавте код, який перевіряє чи присутня літера letter у secretWord, модифікує getUserCurrentGuess
-        // слід також змінювати рахунок користувача методом addScore та викликати метод gameView.letterHasBeenFound чи
-        // gameView.letterAbsent
+ 
+         letter = letter.toLowerCase();
+         int indexOfLetterInWord = getSecretWord().indexOf(letter);
+ 
+         if( indexOfLetterInWord >= 0 )
+         {
+             char[] charsOfGuess = getUserCurrentGuess().toCharArray();
+             charsOfGuess[indexOfLetterInWord] = letter.toCharArray()[0];
+             setUserGuess(String.valueOf(charsOfGuess));
+ 
+             addScore(1);
+             gameView.letterHasBeenFound(letter);
+         }else{
+             addScore(-1);
+             gameView.letterAbsent(letter);
+         }
     }
 
     private void addScore(int value) {
