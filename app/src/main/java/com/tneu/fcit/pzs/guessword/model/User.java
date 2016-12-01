@@ -9,26 +9,55 @@ public class User implements Serializable, Comparable {
     private String nick;
     private String password;
     private int score;
+    private String name;
+    private String surname;
+    private int birthYear;
+    private Gender gender;
 
     public User(String nick, String password) {
         this.nick = nick;
         this.password = password;
     }
 
-    public String getNick() {
-        return nick;
+    public User(String nick, String password, Gender gender, String name, String surname, int birthYear) {
+        this.nick = nick;
+        this.password = password;
+        this.gender = gender;
+        this.name = name;
+        this.surname = surname;
+        this.birthYear = birthYear;
     }
 
-    public String getPassword() {
-        return password;
+    public String getNick() {
+        return nick;
     }
 
     public int getScore() {
         return score;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public int getBirthYear() {
+        return birthYear;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
     public void addScore(int value) {
         score += value;
+    }
+
+    public boolean isPasswordCorrect(String password) {
+        return this.password.equals(password);
     }
 
     @Override
