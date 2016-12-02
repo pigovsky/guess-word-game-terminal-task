@@ -14,12 +14,54 @@ public class WelcomeScreen {
     private final UserService userService = new UserServiceImpl();
 
     public void showWelcome() {
-        System.out.println("Welcome! Please [l]ogin or [r]egister");
+        System.out.println("Welcome! Please [l]ogin or [r]egister or [s]how best results or [e]dit profile");
         String line = Utils.SCANNER.nextLine();
         if (line.equalsIgnoreCase("l")) {
             onLogin();
         } else if (line.equalsIgnoreCase("r")) {
             onRegister();
+        } else if (line.equalsIgnoreCase("s")) {
+            showRecords();
+        } else if (line.equalsIgnoreCase("e")) {
+            editData();
+        }
+    }
+
+    public void editProfile(User user, String firstName, String lastName, String sex, Date birthDate) {
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setSex(sex);
+        user.setBirth(birthDate);
+        userService.save(user);
+    }
+
+    public void editData() {
+        User user = Loggining();
+
+        System.out.println("Enter your first name");
+        user.setFirstName(Utils.SCANNER.nextLine());
+        System.out.println("Enter your last name");
+        user.setLastName(Utils.SCANNER.nextLine());
+        System.out.println("Enter your sex");
+        user.setSex(Utils.SCANNER.nextLine());
+        System.out.println("Enter your date of birth");
+        try {
+            String date = Utils.SCANNER.nextLine();
+            SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
+            user.setBirth(ft.parse(date));
+        } catch (ParseException e) {
+            user.setBirth(null);
+            System.out.println("Wrong format of date!");
+        }
+        userService.save(user);
+    }
+
+    private void showRecords() {
+        if (!userService.all().isEmpty()) {
+            for (Map.Entry<String, User> entry : userService.all().entrySet()) {
+                User player = entry.getValue();
+                System.out.println(user.getNick() + "-" + user.getScore());
+            }
         }
     }
 
@@ -37,7 +79,12 @@ public class WelcomeScreen {
         String pass = promptForPass();
         User user = new User(nick, pass);
         userService.save(user);
+        showWelcomeMessage(user);
         startGameForUser(user);
+    }
+
+    private void showWelcomeMessage(User user) {
+        System.out.println("Hi, " + user.getNick());
     }
 
     private static void startGameForUser(User user) {
@@ -57,6 +104,7 @@ public class WelcomeScreen {
                 break;
             }
         }
+        showWelcomeMessage(user);
         startGameForUser(user);
     }
 

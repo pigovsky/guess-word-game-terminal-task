@@ -34,19 +34,27 @@ public class GamePresenter {
         return userCurrentGuess;
     }
 
+    public String setUserCurrentGuess(String guessWord) {
+        userCurrentGuess = guessWord;
+    }
+
     /**
      * Перевіряє чи введене слово співпадає із секретним.
      * Коли так, то збільшує рахунок гравця на 100 балів і викликає {@link GameView#showCongratulations(String)},
      * інакше --- зменшує його рахунок на 100 балів і викликає {@link GameView#showGameOver(String)}.
-     *
+     * <p/>
      * Метод нечутливий до регістру букв.
      *
      * @param guess слово, введене користувачем
      */
     public void checkWord(String guess) {
-        // TODO: Добавте код, який порівнює введене користувачем слово guess з secretWord (без врахування регістру)
-        // слід змінювати рахунок користувача методом addScore (див. нижче) та викликати метод
-        // gameView.showCongratulations чи gameView.showGameOver
+        if (guess.egualsIgnoreCase(getSecretWord())) {
+            addScore(100);
+            gameView.showCongratulations("Correct word is " + getSecretWord());
+        } else {
+            addScore(-100);
+            gameView.showGameOver(guess + " is a wrong word");
+        }
     }
 
     /**
@@ -54,15 +62,36 @@ public class GamePresenter {
      * Коли так, то збільшує рахунок гравця на одиницю, замінює у відповідній позиції (позиціях) зірочку в
      * {@link #userCurrentGuess} на вгадану букву і викликає {@link GameView#letterHasBeenFound(String)},
      * інакше --- зменшує його рахунок на одиницю і викликає {@link GameView#letterAbsent(String)}.
-     *
+     * <p/>
      * Метод нечутливий до регістру букв.
      *
      * @param letter введена користувачем літера
      */
     public void checkLetter(String letter) {
-        // TODO: Добавте код, який перевіряє чи присутня літера letter у secretWord, модифікує getUserCurrentGuess
-        // слід також змінювати рахунок користувача методом addScore та викликати метод gameView.letterHasBeenFound чи
-        // gameView.letterAbsent
+        char charLetter = letter.toLowerCase().charAt(0);
+        char[] charsOfSecret = getSecretWord().toLowerCase().toCharArray();
+        String searchResult = "Not found";
+
+        for (int i = 0; i < getSecretWord().length(); i++) {
+            if (charsOfSecret[i] == charLetter) {
+                searchResult = "Was found";
+
+                if (getUserCurrentGuess().charAt(i) != '*') {
+                    searchResult = "Letter was guessed before";
+                }
+                setUserCurrentGuess(getUserCurrentGuess().substring(0, i) + charLetter + getUserCurrentGuess().substring(i + 1));
+            }
+        }
+
+        if (searchResult == "Not found") {
+            addScore(-1);
+            gameView.letterAbsent(letter);
+        } else if (searchResult == "Was found") {
+            addScore(1);
+            gameView.letterHasBeenFound(letter);
+        } else {
+            gameView.letterWasGuessedBefore(letter);
+        }
     }
 
     private void addScore(int value) {
