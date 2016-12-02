@@ -52,6 +52,11 @@ public class GameViewImpl implements GameView {
     }
 
     @Override
+    public void letterWasGuessedBefore(String letter) {
+        System.out.printf("You already guessed letter %s. Don't cheat! Your score is the same %d\n", letter, user.getScore());
+    }
+
+    @Override
     public void showGameOver(String guess) {
         System.err.printf("It is not %s. You have loose ((. Your score is %d\n", guess, user.getScore());
     }
