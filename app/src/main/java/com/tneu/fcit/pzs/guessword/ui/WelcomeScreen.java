@@ -6,6 +6,10 @@ import com.tneu.fcit.pzs.guessword.service.UserServiceImpl;
 import com.tneu.fcit.pzs.guessword.utils.Utils;
 import com.tneu.fcit.pzs.guessword.view.GameViewImpl;
 
+import java.util.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 /**
  * Created by yp on 02.11.16.
  */
@@ -14,12 +18,29 @@ public class WelcomeScreen {
     private final UserService userService = new UserServiceImpl();
 
     public void showWelcome() {
-        System.out.println("Welcome! Please [l]ogin or [r]egister");
+        System.out.println("Welcome! Please [l]ogin or [r]egister or [s]how best results");
         String line = Utils.SCANNER.nextLine();
         if (line.equalsIgnoreCase("l")) {
             onLogin();
         } else if (line.equalsIgnoreCase("r")) {
             onRegister();
+        }
+        else if(line.equalsIgnoreCase("s")){
+            onScoreTable();
+        }
+    }
+
+    private  void onScoreTable()
+    {
+        if(userService.all().isEmpty()) {
+            System.out.println("There are no users in database.");
+            return;
+        }
+        List<Map.Entry<String, User>> users = new LinkedList<>(userService.all().entrySet());
+        System.out.println("Score table :");
+        for (Map.Entry<String,User> map : users) {
+            User user = map.getValue();
+            System.out.println(user.getNick()+" - "+user.getScore());
         }
     }
 
@@ -37,6 +58,7 @@ public class WelcomeScreen {
         String pass = promptForPass();
         User user = new User(nick, pass);
         userService.save(user);
+        System.out.println(String.format("\nHello, " + user.getNick()));
         startGameForUser(user);
     }
 
@@ -57,6 +79,7 @@ public class WelcomeScreen {
                 break;
             }
         }
+        System.out.println(String.format("\nHello, " + user.getNick()));
         startGameForUser(user);
     }
 
