@@ -44,9 +44,14 @@ public class GamePresenter {
      * @param guess слово, введене користувачем
      */
     public void checkWord(String guess) {
-        // TODO: Добавте код, який порівнює введене користувачем слово guess з secretWord (без врахування регістру)
-        // слід змінювати рахунок користувача методом addScore (див. нижче) та викликати метод
-        // gameView.showCongratulations чи gameView.showGameOver
+        if(guess.equalsIgnoreCase( getSecretWord() ))
+        {
+            addScore(100);
+            gameView.showCongratulations( getSecretWord() );
+        }else {
+            addScore(-100);
+            gameView.showGameOver(guess);
+        }
     }
 
     /**
@@ -60,9 +65,37 @@ public class GamePresenter {
      * @param letter введена користувачем літера
      */
     public void checkLetter(String letter) {
-        // TODO: Добавте код, який перевіряє чи присутня літера letter у secretWord, модифікує getUserCurrentGuess
-        // слід також змінювати рахунок користувача методом addScore та викликати метод gameView.letterHasBeenFound чи
-        // gameView.letterAbsent
+        char[] charsArray = getSecretWord().toLowerCase().toCharArray();
+        char symbol = letter.toLowerCase().charAt(0);
+        String found = "no";
+
+        for (int i = 0; i < getUserCurrentGuess().length(); i++) {
+            if (symbol == charsArray[i]) {
+                if (symbol != getUserCurrentGuess().charAt(i)) {
+                    found = "yes";
+                    if (i == 0) {
+                        userCurrentGuess = String.format(getUserCurrentGuess().substring(0, i) + Character.toUpperCase(symbol) + getUserCurrentGuess().substring(i + 1));
+                    } else {
+                        userCurrentGuess = String.format(getUserCurrentGuess().substring(0, i) + symbol + getUserCurrentGuess().substring(i + 1));
+                    }
+                } else {
+                    found = "already";
+                }
+            }
+        }
+        if (found.equals("yes")) {
+            addScore(1);
+            gameView.letterHasBeenFound(letter);
+        } else if(found.equals("no")){
+            addScore(-1);
+            gameView.letterAbsent(letter);
+        }
+
+        if (!getUserCurrentGuess().contains("*"))
+            gameView.showCongratulations(getSecretWord());
+
+        System.out.println(getUserCurrentGuess());
+
     }
 
     private void addScore(int value) {
