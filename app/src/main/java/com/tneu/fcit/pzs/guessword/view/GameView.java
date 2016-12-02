@@ -14,4 +14,6 @@ public interface GameView {
 
     void showCongratulations(String secretWord);
 
+    void letterAlreadyFound(String letter);
+
 }

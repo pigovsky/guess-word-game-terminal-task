@@ -24,4 +24,8 @@ public class GameViewStubImpl implements GameView {
     public void showCongratulations(String secretWord) {
 
     }
+
+    public void letterAlreadyFound(String letter){
+
+    }
 }
