@@ -5,8 +5,8 @@ import com.tneu.fcit.pzs.guessword.service.UserService;
 import com.tneu.fcit.pzs.guessword.service.UserServiceImpl;
 import com.tneu.fcit.pzs.guessword.utils.Utils;
 import com.tneu.fcit.pzs.guessword.view.GameViewImpl;
-import java.util.ArrayList;
-import java.util.Comparator;
+
+import java.util.*;
 
 /**
  * Created by yp on 02.11.16.
@@ -20,6 +20,8 @@ public class WelcomeScreen {
         String line = Utils.SCANNER.nextLine();
         if (line.equalsIgnoreCase("l")) {
             onLogin();
+        } else if (line.equalsIgnoreCase("r")) {
+            onRegister();
         } else if (line.equalsIgnoreCase("s")) {
             onShow();
         }
@@ -79,7 +81,37 @@ public class WelcomeScreen {
                 break;
             }
         }
+
+        System.out.println("Do you want to change your data, [y]es or no");
+        String line = Utils.SCANNER.nextLine();
+        if (line.equalsIgnoreCase("y"))
+            onChange(user);
+
         startGameForUser(user);
+    }
+
+    private void onChange(User user) {
+        System.out.println("What you want to edit password: y");
+        if (Utils.SCANNER.nextLine().toLowerCase().equals("Y"))
+            user.setPassword(promptForPass());
+
+        System.out.println("What you want to edit name: y");
+        if (Utils.SCANNER.nextLine().toLowerCase().equals("Y"))
+            user.setName(promptForName());
+
+        System.out.println("What you want to edit surname: y");
+        if (Utils.SCANNER.nextLine().toLowerCase().equals("Y"))
+            user.setSurname(promptForSurname());
+
+        System.out.println("What you want to edit sex: y");
+        if (Utils.SCANNER.nextLine().toLowerCase().equals("Y"))
+            user.setSex(promptForSex());
+
+        System.out.println("What you want to edit birth: y");
+        if (Utils.SCANNER.nextLine().toLowerCase().equals("Y"))
+            user.setBirthYear(promptForBirth());
+
+        userService.save(user);
     }
 
     private static String promptForPass() {
@@ -90,5 +122,46 @@ public class WelcomeScreen {
     private static String promptForNick() {
         System.out.println("Enter your nick, please");
         return Utils.SCANNER.nextLine();
+    }
+
+    private String promptForName() {
+        System.out.println("Enter your name, please");
+        return Utils.SCANNER.nextLine();
+    }
+
+    private String promptForSurname() {
+        System.out.println("Enter your surname, please");
+        return Utils.SCANNER.nextLine();
+    }
+
+    private boolean promptForSex() {
+        boolean sex;
+        while (true) {
+            System.out.println("Enter your sex (woman or man), please");
+            String Sex = Utils.SCANNER.nextLine();
+            if (Sex.toLowerCase().equals("woman")) {
+                sex = false;
+                break;
+            } else if (Sex.toLowerCase().equals("man")) {
+                sex = true;
+                break;
+            } else
+                System.out.println("Please enter 'woman' or 'man'");
+        }
+        return sex;
+    }
+
+    private int promptForBirth() {
+        int year;
+        while (true) {
+            System.out.println("Enter your birth year, please");
+            try {
+                year = Utils.SCANNER.nextInt();
+                break;
+            } catch (Exception e) {
+                System.out.println("Please enter real year");
+            }
+        }
+        return year;
     }
 }
