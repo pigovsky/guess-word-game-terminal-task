@@ -38,7 +38,7 @@ public class GamePresenter {
      * Перевіряє чи введене слово співпадає із секретним.
      * Коли так, то збільшує рахунок гравця на 100 балів і викликає {@link GameView#showCongratulations(String)},
      * інакше --- зменшує його рахунок на 100 балів і викликає {@link GameView#showGameOver(String)}.
-     *
+     * <p>
      * Метод нечутливий до регістру букв.
      *
      * @param guess слово, введене користувачем
@@ -47,6 +47,13 @@ public class GamePresenter {
         // TODO: Добавте код, який порівнює введене користувачем слово guess з secretWord (без врахування регістру)
         // слід змінювати рахунок користувача методом addScore (див. нижче) та викликати метод
         // gameView.showCongratulations чи gameView.showGameOver
+        if (guess.equalsIgnoreCase(secretWord)) {
+            addScore(100);
+            gameView.showCongratulations(secretWord);
+        } else {
+            addScore(-100);
+            gameView.showGameOver(secretWord);
+        }
     }
 
     /**
@@ -54,7 +61,7 @@ public class GamePresenter {
      * Коли так, то збільшує рахунок гравця на одиницю, замінює у відповідній позиції (позиціях) зірочку в
      * {@link #userCurrentGuess} на вгадану букву і викликає {@link GameView#letterHasBeenFound(String)},
      * інакше --- зменшує його рахунок на одиницю і викликає {@link GameView#letterAbsent(String)}.
-     *
+     * <p>
      * Метод нечутливий до регістру букв.
      *
      * @param letter введена користувачем літера
@@ -63,6 +70,13 @@ public class GamePresenter {
         // TODO: Добавте код, який перевіряє чи присутня літера letter у secretWord, модифікує getUserCurrentGuess
         // слід також змінювати рахунок користувача методом addScore та викликати метод gameView.letterHasBeenFound чи
         // gameView.letterAbsent
+        if (letter.contains(secretWord)){
+            addScore(1);
+            gameView.letterHasBeenFound(letter);
+        }else {
+            addScore(-1);
+            gameView.letterAbsent(letter);
+        }
     }
 
     private void addScore(int value) {
