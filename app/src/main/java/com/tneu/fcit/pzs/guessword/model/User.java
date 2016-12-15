@@ -6,9 +6,13 @@ import java.io.Serializable;
  * Created by yp on 02.11.16.
  */
 public class User implements Serializable {
-    String nick;
-    String password;
-    int score;
+    private String nick;
+    private String name;
+    private String surname;
+    private String birthYear;
+    private String password;
+    private String sex;
+    private int score;
 
     public User(String nick, String password) {
         this.nick = nick;
@@ -29,5 +33,37 @@ public class User implements Serializable {
 
     public void addScore(int value) {
         score += value;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getBirthYear() {
+        return birthYear;
+    }
+
+    public void setBirthYear(String birthYear) {
+        this.birthYear = birthYear;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 }
