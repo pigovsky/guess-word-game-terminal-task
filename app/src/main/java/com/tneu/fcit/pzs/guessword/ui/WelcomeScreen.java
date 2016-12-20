@@ -14,13 +14,20 @@ public class WelcomeScreen {
     private final UserService userService = new UserServiceImpl();
 
     public void showWelcome() {
-        System.out.println("Welcome! Please [l]ogin or [r]egister");
+        System.out.println("Welcome! Please [l]ogin, [r]egister or [s]how best results");
         String line = Utils.SCANNER.nextLine();
         if (line.equalsIgnoreCase("l")) {
             onLogin();
         } else if (line.equalsIgnoreCase("r")) {
             onRegister();
+        }else if(line.equalsIgnoreCase("s")){
+            onResult();
         }
+    }
+
+    private void onResult() {
+        System.out.println("Show best result");
+        // (...)
     }
 
     private void onRegister() {
@@ -38,6 +45,7 @@ public class WelcomeScreen {
         User user = new User(nick, pass);
         userService.save(user);
         startGameForUser(user);
+        System.out.println("Hello, "+userService.all().get(nick));
     }
 
     private static void startGameForUser(User user) {
@@ -47,9 +55,10 @@ public class WelcomeScreen {
     private void onLogin() {
         System.out.println("Login started");
         User user;
+        String nick, pass;
         while (true) {
-            String nick = promptForNick();
-            String pass = promptForPass();
+            nick = promptForNick();
+            pass = promptForPass();
             user = userService.check(nick, pass);
             if (user == null) {
                 System.err.println("Wrong nick or password");
@@ -58,6 +67,7 @@ public class WelcomeScreen {
             }
         }
         startGameForUser(user);
+        System.out.println("Hello, "+nick);
     }
 
     private static String promptForPass() {
